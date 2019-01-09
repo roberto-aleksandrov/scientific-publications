@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.DependencyInjection;
+using ScientificPublications.Infrastructure;
 
 namespace ScientificPublications.WebUI
 {
@@ -7,7 +9,14 @@ namespace ScientificPublications.WebUI
     {
         public static void Main(string[] args)
         {
-            CreateWebHostBuilder(args).Build().Run();
+            var host = CreateWebHostBuilder(args).Build();
+            using (var scope = host.Services.CreateScope())
+            {
+                var context = scope.ServiceProvider.GetService<ScientificPublicationsContext>();
+                context.Database.EnsureCreated();
+            }
+
+            host.Run();
         }
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>

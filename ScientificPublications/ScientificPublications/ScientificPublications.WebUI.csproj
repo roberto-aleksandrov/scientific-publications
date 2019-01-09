@@ -5,8 +5,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="MediatR" Version="6.0.0" />
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="6.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ScientificPublications.Application\ScientificPublications.Application.csproj" />
+    <ProjectReference Include="..\ScientificPublications.Infrastructure\ScientificPublications.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

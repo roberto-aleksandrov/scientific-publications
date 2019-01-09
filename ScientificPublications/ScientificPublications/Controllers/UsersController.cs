@@ -1,13 +1,24 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using MediatR;
+using Microsoft.AspNetCore.Mvc;
+using ScientificPublications.Application.User.Commands.CreateUser;
+using ScientificPublications.WebUI.Models.BindingModels;
 
 namespace ScientificPublications.WebUI.Controllers
 {
     public class UsersController : Controller
     {
-        [Route("")]
-        public ActionResult<string> Hello()
+        private readonly IMediator _mediator;
+
+        public UsersController(IMediator mediator)
         {
-            return Ok("hello");
+            _mediator = mediator;
+        }
+
+        [HttpPost("api/register")]
+        public ActionResult<string> CreateUser([FromBody] CreateUserBindingModel createUserBm)
+        {
+            _mediator.Send(new CreateUserCommand { UserName = createUserBm.UserName, Password = createUserBm.Password });
+            return Ok("");
         }
     }
 }

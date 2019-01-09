@@ -1,9 +1,17 @@
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using ScientificPublications.Application.Interfaces;
+using ScientificPublications.Application.User.Commands.CreateUser;
+using ScientificPublications.Domain.Entities;
+using ScientificPublications.Infrastructure;
+using ScientificPublications.Infrastructure.Data;
+using System.Reflection;
 
 namespace ScientificPublications.WebUI
 {
@@ -26,7 +34,15 @@ namespace ScientificPublications.WebUI
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            // Add MediatR
+            services.AddMediatR(typeof(CreateUserCommandHandler).GetTypeInfo().Assembly);
 
+            // Add DbContext
+            services.AddDbContext<ScientificPublicationsContext>(c =>
+               c.UseSqlServer(Configuration.GetConnectionString("ScientificPublicationsConnection")));
+
+            services.AddTransient<IRepository<User>, EfRepository<User>>();
+            
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
