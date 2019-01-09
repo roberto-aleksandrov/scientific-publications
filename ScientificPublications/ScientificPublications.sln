@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.136
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScientificPublications.WebUI", "ScientificPublications\ScientificPublications.WebUI.csproj", "{6047B698-1D20-4F9E-A9F4-D0D2E06AD6AF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Src", "Src", "{7E6E3ECE-CE5D-43EA-8C45-DF38D5153FB1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{F7A12FCB-0F22-4F40-A3F8-B50E7ED68978}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6047B698-1D20-4F9E-A9F4-D0D2E06AD6AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6047B698-1D20-4F9E-A9F4-D0D2E06AD6AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6047B698-1D20-4F9E-A9F4-D0D2E06AD6AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6047B698-1D20-4F9E-A9F4-D0D2E06AD6AF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{6047B698-1D20-4F9E-A9F4-D0D2E06AD6AF} = {F7A12FCB-0F22-4F40-A3F8-B50E7ED68978}
+		{F7A12FCB-0F22-4F40-A3F8-B50E7ED68978} = {7E6E3ECE-CE5D-43EA-8C45-DF38D5153FB1}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7785BCE9-0134-45B2-AC82-9BE63FE6529B}
+	EndGlobalSection
+EndGlobal
