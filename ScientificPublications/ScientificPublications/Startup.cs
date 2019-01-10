@@ -27,6 +27,18 @@ namespace ScientificPublications.WebUI
 
         public IConfiguration Configuration { get; }
 
+        private void RegisterDbContext(IServiceCollection services)
+        {
+            services.AddDbContext<ScientificPublicationsContext>(c =>
+               c.UseSqlServer(Configuration.GetConnectionString("ScientificPublicationsConnection")));
+        }
+
+        private void RegisterMediatr(IServiceCollection services)
+        {
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
+            services.AddMediatR(typeof(CreateUserCommandHandler).GetTypeInfo().Assembly);
+        }
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
@@ -37,20 +49,15 @@ namespace ScientificPublications.WebUI
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            // Add MediatR
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
-            services.AddMediatR(typeof(CreateUserCommandHandler).GetTypeInfo().Assembly);
-
-            // Add DbContext
-            services.AddDbContext<ScientificPublicationsContext>(c =>
-               c.UseSqlServer(Configuration.GetConnectionString("ScientificPublicationsConnection")));
+            RegisterDbContext(services);
+            RegisterMediatr(services);
 
             services.AddTransient<IAsyncRepository<User>, EfRepository<User>>();
             services.AddTransient<IRepository<User>, EfRepository<User>>();
             services.AddTransient<IData, ScientificPublicationsData>();
             
             services.AddMvc(options => options.Filters.Add(typeof(CustomExceptionFilterAttribute)))
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CreateUserCommandValidator>());
         }
 
