@@ -1,8 +1,8 @@
 ﻿using MediatR;
 
-namespace ScientificPublications.Application.User.Commands.CreateUser
+namespace ScientificPublications.Application.Users.Commands.CreateUser
 {
-    public class CreateUserCommand : IRequest
+    public class CreateUserCommand : IRequest<object>
     {
         public string UserName { get; set; }
 

@@ -1,3 +1,4 @@
+using FluentValidation.AspNetCore;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -6,11 +7,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using ScientificPublications.Application.Infrastructure;
 using ScientificPublications.Application.Interfaces;
-using ScientificPublications.Application.User.Commands.CreateUser;
+using ScientificPublications.Application.Users.Commands.CreateUser;
 using ScientificPublications.Domain.Entities;
 using ScientificPublications.Infrastructure;
 using ScientificPublications.Infrastructure.Data;
+using ScientificPublications.WebUI.Filters;
 using System.Reflection;
 
 namespace ScientificPublications.WebUI
@@ -35,15 +38,20 @@ namespace ScientificPublications.WebUI
             });
 
             // Add MediatR
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
             services.AddMediatR(typeof(CreateUserCommandHandler).GetTypeInfo().Assembly);
 
             // Add DbContext
             services.AddDbContext<ScientificPublicationsContext>(c =>
                c.UseSqlServer(Configuration.GetConnectionString("ScientificPublicationsConnection")));
 
+            services.AddTransient<IAsyncRepository<User>, EfRepository<User>>();
             services.AddTransient<IRepository<User>, EfRepository<User>>();
+            services.AddTransient<IData, ScientificPublicationsData>();
             
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc(options => options.Filters.Add(typeof(CustomExceptionFilterAttribute)))
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
+                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CreateUserCommandValidator>());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

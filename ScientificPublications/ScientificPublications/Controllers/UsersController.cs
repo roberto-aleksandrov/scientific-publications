@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using ScientificPublications.Application.User.Commands.CreateUser;
+using ScientificPublications.Application.Users.Commands.CreateUser;
 using ScientificPublications.WebUI.Models.BindingModels;
 
 namespace ScientificPublications.WebUI.Controllers
