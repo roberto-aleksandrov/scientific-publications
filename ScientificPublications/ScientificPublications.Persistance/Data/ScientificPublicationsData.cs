@@ -1,4 +1,4 @@
-﻿using ScientificPublications.Application.Interfaces;
+﻿using ScientificPublications.Application.Interfaces.Data;
 using ScientificPublications.Domain.Entities;
 
 namespace ScientificPublications.Infrastructure.Data

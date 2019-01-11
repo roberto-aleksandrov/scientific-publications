@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Caelan.Frameworks.PasswordEncryption" Version="3.3.2.15" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\ScientificPublications.Application\ScientificPublications.Application.csproj" />
   </ItemGroup>
 

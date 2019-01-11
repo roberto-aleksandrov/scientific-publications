@@ -8,12 +8,16 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ScientificPublications.Application.Infrastructure;
-using ScientificPublications.Application.Interfaces;
-using ScientificPublications.Application.Users.Commands.CreateUser;
+using ScientificPublications.Application.Interfaces.Data;
+using ScientificPublications.Application.Interfaces.Hasher;
+using ScientificPublications.Application.Features.Users.Commands.CreateUser;
 using ScientificPublications.Domain.Entities;
 using ScientificPublications.Infrastructure;
 using ScientificPublications.Infrastructure.Data;
+using ScientificPublications.Infrastructure.Interfaces.PasswordGenerators;
+using ScientificPublications.Infrastructure.PasswordGenerators;
 using ScientificPublications.WebUI.Filters;
+using ScientificPublications.WebUI.Models.Common;
 using System.Reflection;
 
 namespace ScientificPublications.WebUI
@@ -42,6 +46,11 @@ namespace ScientificPublications.WebUI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+            services.AddMvc(options => options.Filters.Add(typeof(CustomExceptionFilterAttribute)))
+               .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
+               .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CreateUserCommandValidator>());
+
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
@@ -52,13 +61,14 @@ namespace ScientificPublications.WebUI
             RegisterDbContext(services);
             RegisterMediatr(services);
 
+            services.AddOptions();
             services.AddTransient<IAsyncRepository<User>, EfRepository<User>>();
             services.AddTransient<IRepository<User>, EfRepository<User>>();
             services.AddTransient<IData, ScientificPublicationsData>();
-            
-            services.AddMvc(options => options.Filters.Add(typeof(CustomExceptionFilterAttribute)))
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
-                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CreateUserCommandValidator>());
+            services.AddTransient<IHasher, PasswordGenerator>();
+            services.AddSingleton<IPasswordGeneratorOptions>(Configuration.GetSection("Auth").Get<PasswordGeneratorOptions>());
+
+           
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

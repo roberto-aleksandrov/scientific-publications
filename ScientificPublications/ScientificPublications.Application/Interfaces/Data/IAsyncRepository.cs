@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace ScientificPublications.Application.Interfaces
+namespace ScientificPublications.Application.Interfaces.Data
 {
     public interface IAsyncRepository<T> where T : BaseEntity
     {

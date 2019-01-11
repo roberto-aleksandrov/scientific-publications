@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ScientificPublications.Application\ScientificPublications.Application.csproj" />
+    <ProjectReference Include="..\ScientificPublications.Infrastructure\ScientificPublications.Infrastructure.csproj" />
     <ProjectReference Include="..\ScientificPublications.Persistance\ScientificPublications.Persistance.csproj" />
   </ItemGroup>
 

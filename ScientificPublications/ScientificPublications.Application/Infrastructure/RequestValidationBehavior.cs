@@ -17,12 +17,12 @@ namespace ScientificPublications.Application.Infrastructure
             _validators = validators;
         }
 
-        public Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
+        public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
         {
             var context = new ValidationContext(request);
 
-            var failures = _validators
-                .Select(v => v.Validate(context))
+            var failures = (await Task.WhenAll(_validators
+                .Select(v => v.ValidateAsync(context, cancellationToken))))
                 .SelectMany(result => result.Errors)
                 .Where(f => f != null)
                 .ToList();
@@ -32,7 +32,7 @@ namespace ScientificPublications.Application.Infrastructure
                 throw new Exceptions.ValidationException(failures);
             }
 
-            return next();
+            return await next();
         }
     }
 

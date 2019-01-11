@@ -1,7 +1,7 @@
 ﻿using ScientificPublications.Domain.Entities;
 using System.Collections.Generic;
 
-namespace ScientificPublications.Application.Interfaces
+namespace ScientificPublications.Application.Interfaces.Data
 {
     public interface IRepository<T> where T : BaseEntity
     {

@@ -1,7 +1,9 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using ScientificPublications.Application.Users.Commands.CreateUser;
+using ScientificPublications.Application.Features.Users.Commands.CreateUser;
 using ScientificPublications.WebUI.Models.BindingModels;
+using System;
+using System.Threading.Tasks;
 
 namespace ScientificPublications.WebUI.Controllers
 {
@@ -15,9 +17,9 @@ namespace ScientificPublications.WebUI.Controllers
         }
 
         [HttpPost("api/register")]
-        public ActionResult<string> CreateUser([FromBody] CreateUserBindingModel createUserBm)
+        public async Task<ActionResult<string>> CreateUser([FromBody] CreateUserBindingModel createUserBm)
         {
-            _mediator.Send(new CreateUserCommand { UserName = createUserBm.UserName, Password = createUserBm.Password });
+            await _mediator.Send(new CreateUserCommand { Username = createUserBm.UserName, Password = createUserBm.Password });
             return Ok("");
         }
     }

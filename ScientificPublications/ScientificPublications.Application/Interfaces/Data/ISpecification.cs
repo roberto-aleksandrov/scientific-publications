@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 
-namespace ScientificPublications.Application.Interfaces
+namespace ScientificPublications.Application.Interfaces.Data
 {
     public interface ISpecification<T>
     {

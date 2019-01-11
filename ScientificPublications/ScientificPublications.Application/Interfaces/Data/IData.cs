@@ -1,6 +1,6 @@
 ﻿using ScientificPublications.Domain.Entities;
 
-namespace ScientificPublications.Application.Interfaces
+namespace ScientificPublications.Application.Interfaces.Data
 {
     public interface IData
     {
