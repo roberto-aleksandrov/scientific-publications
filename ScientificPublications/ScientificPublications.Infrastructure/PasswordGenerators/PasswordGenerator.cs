@@ -16,18 +16,14 @@ namespace ScientificPublications.Infrastructure.PasswordGenerators
 
         public string Create(string hashable)
         {
-            return Create(hashable, _secret);
-        }
-
-        public string Create(string hashable, string secret)
-        {
-            return Create(hashable, secret, Guid.NewGuid().ToString());
-        }
-
-        public string Create(string hashable, string secret, string salt)
-        {
-            var passwordEncryptor = new PasswordEncryptor(hashable, secret, salt);
+            var passwordEncryptor = new PasswordEncryptor(hashable, _secret, Guid.NewGuid().ToString());
             return passwordEncryptor.DefaultPasswordEncrypted;
+        }
+
+        public string Decrypt(string hashed, string salt)
+        {
+            var passwordEncryptor = new PasswordEncryptor("", _secret, salt);
+            return passwordEncryptor.DecryptPassword(hashed);
         }
     }
 }

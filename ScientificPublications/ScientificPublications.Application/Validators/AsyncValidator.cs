@@ -8,10 +8,11 @@ namespace ScientificPublications.Application.Validators
 {
     public class AsyncValidator : PropertyValidator
     {
+        public AsyncValidator(IStringSource stringSource)
+            : base (stringSource) { }
+
         public AsyncValidator(string errorMessage) 
-            : base(errorMessage)
-        {
-        }
+            : base(errorMessage) { }
 
         protected override bool IsValid(PropertyValidatorContext context)
         {

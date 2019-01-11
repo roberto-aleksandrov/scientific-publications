@@ -3,20 +3,28 @@ using ScientificPublications.Application.Interfaces.Data;
 using ScientificPublications.Application.Validators;
 using ScientificPublications.Domain.Entities;
 using System;
-using System.Collections.Generic;
 using System.Linq.Expressions;
 
 namespace ScientificPublications.Application.Extensions
 {
     public static class FluentValidationExtensions
     {
-        public static IRuleBuilderOptions<TRequest, TProperty> ValidateEntities<TEntity, TRequest, TProperty>(
+        public static IRuleBuilderOptions<TRequest, TProperty> None<TEntity, TRequest, TProperty>(
             this IRuleBuilder<TRequest, TProperty> ruleBuilder,
-            Func<TProperty, Expression<Func<TEntity, bool>>> criteria,
-            IAsyncRepository<TEntity> repository)
+            IAsyncRepository<TEntity> repository,
+            Func<TProperty, Expression<Func<TEntity, bool>>> criteria)
                 where TEntity : BaseEntity
         {
-            return ruleBuilder.SetValidator(new EntitiestAsyncValidator<TProperty, TEntity>(criteria, repository));
+            return ruleBuilder.SetValidator(new NoneAsyncValidator<TProperty, TEntity>(criteria, repository));
+        }
+
+        public static IRuleBuilderOptions<TRequest, TProperty> Any<TEntity, TRequest, TProperty>(
+         this IRuleBuilder<TRequest, TProperty> ruleBuilder,
+         IAsyncRepository<TEntity> repository,
+         Func<TProperty, Expression<Func<TEntity, bool>>> criteria)
+             where TEntity : BaseEntity
+        {
+            return ruleBuilder.SetValidator(new AnyAsyncValidator<TProperty, TEntity>(criteria, repository));
         }
     }
 }

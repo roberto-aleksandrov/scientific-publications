@@ -16,12 +16,11 @@ namespace ScientificPublications.Application.Features.Users.Commands.CreateUser
 
             RuleFor(n => n.Username)
                 .MinimumLength(4)
-                .ValidateEntities(n => k => k.Username == n, _data.Users)
-                .NotEmpty();
+                .NotEmpty()
+                .None(_data.Users, username => userEntity => userEntity.Username == username);
 
             RuleFor(n => n.Password)
                 .MinimumLength(8)
-                //.ValidateEntities(n => k => k.Password == n, data.Users)
                 .NotEmpty();
         }
     }

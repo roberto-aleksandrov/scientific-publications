@@ -4,8 +4,6 @@
     {
         string Create(string hashable);
 
-        string Create(string hashable, string secret);
-
-        string Create(string hashable, string secret, string salt);
+        string Decrypt(string hashed, string salt);
     }
 }

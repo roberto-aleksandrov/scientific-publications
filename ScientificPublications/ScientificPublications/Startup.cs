@@ -19,6 +19,12 @@ using ScientificPublications.Infrastructure.PasswordGenerators;
 using ScientificPublications.WebUI.Filters;
 using ScientificPublications.WebUI.Models.Common;
 using System.Reflection;
+using ScientificPublications.WebUI.Models.Options;
+using ScientificPublications.Application.Interfaces.Authentication;
+using Calendar.Utilities.TokenGenerators;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace ScientificPublications.WebUI
 {
@@ -66,9 +72,24 @@ namespace ScientificPublications.WebUI
             services.AddTransient<IRepository<User>, EfRepository<User>>();
             services.AddTransient<IData, ScientificPublicationsData>();
             services.AddTransient<IHasher, PasswordGenerator>();
+            services.AddTransient<ITokenGenerator, TokenGenerator>();
             services.AddSingleton<IPasswordGeneratorOptions>(Configuration.GetSection("Auth").Get<PasswordGeneratorOptions>());
+            services.AddSingleton<IAuthenticationOptions>(Configuration.GetSection("Auth").Get<AuthenticationOptions>());
 
-           
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).
+                AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+                        ValidIssuer = Configuration.GetSection("Auth:Iss").Value,
+                        ValidAudience = Configuration.GetSection("Auth:Audience").Value,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration.GetSection("Auth:SecretKey").Value))
+                    };
+                });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
