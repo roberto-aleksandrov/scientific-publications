@@ -10,20 +10,18 @@ using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 
-
-namespace ScientificPublications.Application.Validators
+namespace ScientificPublications.Application.Infrastructure.Validators
 {
-    public class AnyAsyncValidator<TProperty, TEntity> : AsyncValidator
+    public class NoneAsyncValidator<TProperty, TEntity> : AsyncValidator
           where TEntity : BaseEntity
     {
         private readonly Func<TProperty, Expression<Func<TEntity, bool>>> _criteria;
         private readonly IAsyncRepository<TEntity> _repository;
 
-        public AnyAsyncValidator(
-            Func<TProperty,
-            Expression<Func<TEntity, bool>>> criteria,
+        public NoneAsyncValidator(
+            Func<TProperty, Expression<Func<TEntity, bool>>> criteria,
             IAsyncRepository<TEntity> repository)
-            : base(ErrorMessages.EntityDoesNotExists)
+            : base(ErrorMessages.EntityExists)
         {
             _repository = repository;
             _criteria = criteria;
@@ -31,11 +29,11 @@ namespace ScientificPublications.Application.Validators
 
         protected override async Task<bool> IsValidAsync(PropertyValidatorContext context, CancellationToken cancellation)
         {
-            Expression<Func<TEntity, bool>> criteria = _criteria((TProperty)context.PropertyValue);
-            BaseSpecification<TEntity> specification = new BaseSpecification<TEntity>(criteria);
-            IReadOnlyList<TEntity> entities = await _repository.ListAsync(specification);
+            var criteria = _criteria((TProperty)context.PropertyValue);
+            var specification = new BaseSpecification<TEntity>(criteria);
+            var entities = await _repository.ListAsync(specification);
 
-            return entities.Any();
+            return !entities.Any();
         }
     }
 }

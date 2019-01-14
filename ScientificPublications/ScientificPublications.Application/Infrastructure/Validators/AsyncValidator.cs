@@ -4,7 +4,7 @@ using FluentValidation.Validators;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ScientificPublications.Application.Validators
+namespace ScientificPublications.Application.Infrastructure.Validators
 {
     public class AsyncValidator : PropertyValidator
     {

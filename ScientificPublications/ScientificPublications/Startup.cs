@@ -1,5 +1,8 @@
+using AutoMapper;
+using Calendar.Utilities.TokenGenerators;
 using FluentValidation.AspNetCore;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -7,23 +10,23 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using ScientificPublications.Application.Infrastructure;
+using Microsoft.IdentityModel.Tokens;
+using ScientificPublications.Application.Features.Users.Commands.RegisterUser;
+using ScientificPublications.Application.Infrastructure.Validators;
+using ScientificPublications.Application.Interfaces.Authentication;
 using ScientificPublications.Application.Interfaces.Data;
 using ScientificPublications.Application.Interfaces.Hasher;
-using ScientificPublications.Application.Features.Users.Commands.CreateUser;
 using ScientificPublications.Domain.Entities;
 using ScientificPublications.Infrastructure;
 using ScientificPublications.Infrastructure.Data;
 using ScientificPublications.Infrastructure.Interfaces.PasswordGenerators;
 using ScientificPublications.Infrastructure.PasswordGenerators;
+using ScientificPublications.WebUI.AutoMapper.Profiles;
 using ScientificPublications.WebUI.Filters;
 using ScientificPublications.WebUI.Models.Common;
-using System.Reflection;
 using ScientificPublications.WebUI.Models.Options;
-using ScientificPublications.Application.Interfaces.Authentication;
-using Calendar.Utilities.TokenGenerators;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
+using Swashbuckle.AspNetCore.Swagger;
+using System.Reflection;
 using System.Text;
 
 namespace ScientificPublications.WebUI
@@ -46,16 +49,17 @@ namespace ScientificPublications.WebUI
         private void RegisterMediatr(IServiceCollection services)
         {
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
-            services.AddMediatR(typeof(CreateUserCommandHandler).GetTypeInfo().Assembly);
+            services.AddMediatR(typeof(RegisterUserCommandHandler).GetTypeInfo().Assembly);
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAutoMapper(new Assembly[] { typeof(BmToRequestProfile).GetTypeInfo().Assembly });
 
             services.AddMvc(options => options.Filters.Add(typeof(CustomExceptionFilterAttribute)))
                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
-               .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CreateUserCommandValidator>());
+               .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<RegisterUserCommandValidator>());
 
             services.Configure<CookiePolicyOptions>(options =>
             {
@@ -73,6 +77,7 @@ namespace ScientificPublications.WebUI
             services.AddTransient<IData, ScientificPublicationsData>();
             services.AddTransient<IHasher, PasswordGenerator>();
             services.AddTransient<ITokenGenerator, TokenGenerator>();
+
             services.AddSingleton<IPasswordGeneratorOptions>(Configuration.GetSection("Auth").Get<PasswordGeneratorOptions>());
             services.AddSingleton<IAuthenticationOptions>(Configuration.GetSection("Auth").Get<AuthenticationOptions>());
 
@@ -90,6 +95,11 @@ namespace ScientificPublications.WebUI
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration.GetSection("Auth:SecretKey").Value))
                     };
                 });
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -109,7 +119,15 @@ namespace ScientificPublications.WebUI
             app.UseStaticFiles();
             app.UseCookiePolicy();
 
+            app.UseSwagger(); 
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Swagger");
+                c.RoutePrefix = string.Empty;
+            });
+
             app.UseMvc();
+
         }
     }
 }

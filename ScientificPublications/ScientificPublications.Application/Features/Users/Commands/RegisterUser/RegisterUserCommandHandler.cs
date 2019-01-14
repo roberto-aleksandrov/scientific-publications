@@ -6,20 +6,20 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ScientificPublications.Application.Features.Users.Commands.CreateUser
+namespace ScientificPublications.Application.Features.Users.Commands.RegisterUser
 {
-    public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, object>
+    public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, object>
     {
         private readonly IData _data;
         private readonly IHasher _hasher;
 
-        public CreateUserCommandHandler(IData data, IHasher hasher)
+        public RegisterUserCommandHandler(IData data, IHasher hasher)
         {
             _data = data;
             _hasher = hasher;
         }
 
-        public async Task<object> Handle(CreateUserCommand request, CancellationToken cancellationToken)
+        public async Task<object> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
         {
             var salt = Guid.NewGuid().ToString();
             var user = new User

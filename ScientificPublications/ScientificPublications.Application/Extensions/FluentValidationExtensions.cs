@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 using ScientificPublications.Application.Interfaces.Data;
-using ScientificPublications.Application.Validators;
+using ScientificPublications.Application.Infrastructure.Validators;
 using ScientificPublications.Domain.Entities;
 using System;
 using System.Linq.Expressions;

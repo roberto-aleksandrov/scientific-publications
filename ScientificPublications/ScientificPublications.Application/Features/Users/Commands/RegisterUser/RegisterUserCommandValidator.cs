@@ -2,22 +2,18 @@
 using ScientificPublications.Application.Extensions;
 using ScientificPublications.Application.Interfaces.Data;
 
-namespace ScientificPublications.Application.Features.Users.Commands.CreateUser
+namespace ScientificPublications.Application.Features.Users.Commands.RegisterUser
 {
-    public class CreateUserCommandValidator : AbstractValidator<CreateUserCommand>
+    public class RegisterUserCommandValidator : AbstractValidator<RegisterUserCommand>
     {
-        private readonly IData _data;
-
-        public CreateUserCommandValidator(IData data)
+        public RegisterUserCommandValidator(IData data)
         {
-            _data = data;
-
             CascadeMode = CascadeMode.StopOnFirstFailure;
 
             RuleFor(n => n.Username)
                 .MinimumLength(4)
                 .NotEmpty()
-                .None(_data.Users, username => userEntity => userEntity.Username == username);
+                .None(data.Users, username => userEntity => userEntity.Username == username);
 
             RuleFor(n => n.Password)
                 .MinimumLength(8)

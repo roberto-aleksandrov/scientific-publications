@@ -2,7 +2,6 @@
 using ScientificPublications.Application.Extensions;
 using ScientificPublications.Application.Interfaces.Data;
 using ScientificPublications.Application.Interfaces.Hasher;
-using System.Linq.Expressions;
 
 namespace ScientificPublications.Application.Features.Users.Queries
 {
@@ -10,6 +9,8 @@ namespace ScientificPublications.Application.Features.Users.Queries
     {
         public LoginQueryValidator(IData data, IHasher hasher)
         {
+            CascadeMode = CascadeMode.StopOnFirstFailure;
+
             RuleFor(n => n.Username)
                 .MinimumLength(4)
                 .NotEmpty();
@@ -20,7 +21,7 @@ namespace ScientificPublications.Application.Features.Users.Queries
 
             RuleFor(n => n)
                 .Any(data.Users, request => entity =>
-                            request.Username == entity.Username 
+                        request.Username == entity.Username
                         && request.Password == hasher.Decrypt(entity.Password, entity.Salt));
         }
     }

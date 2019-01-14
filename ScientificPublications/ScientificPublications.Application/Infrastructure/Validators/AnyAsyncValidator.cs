@@ -10,19 +10,19 @@ using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ScientificPublications.Application.Validators
+
+namespace ScientificPublications.Application.Infrastructure.Validators
 {
-    public class NoneAsyncValidator<TProperty, TEntity> : AsyncValidator
+    public class AnyAsyncValidator<TProperty, TEntity> : AsyncValidator
           where TEntity : BaseEntity
     {
         private readonly Func<TProperty, Expression<Func<TEntity, bool>>> _criteria;
         private readonly IAsyncRepository<TEntity> _repository;
 
-        public NoneAsyncValidator(
-            Func<TProperty,
-            Expression<Func<TEntity, bool>>> criteria,
+        public AnyAsyncValidator(
+            Func<TProperty, Expression<Func<TEntity, bool>>> criteria,
             IAsyncRepository<TEntity> repository)
-            : base(ErrorMessages.EntityExists)
+            : base(ErrorMessages.EntityDoesNotExists)
         {
             _repository = repository;
             _criteria = criteria;
@@ -34,7 +34,7 @@ namespace ScientificPublications.Application.Validators
             BaseSpecification<TEntity> specification = new BaseSpecification<TEntity>(criteria);
             IReadOnlyList<TEntity> entities = await _repository.ListAsync(specification);
 
-            return !entities.Any();
+            return entities.Any();
         }
     }
 }
