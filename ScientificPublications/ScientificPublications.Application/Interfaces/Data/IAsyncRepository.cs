@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace ScientificPublications.Application.Interfaces.Data
 {
-    public interface IAsyncRepository<T> where T : BaseEntity
+    public interface IAsyncRepository<T> where T : Entity
     {
         Task<T> GetByIdAsync(int id);
 

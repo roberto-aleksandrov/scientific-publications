@@ -1,6 +1,6 @@
 ﻿namespace ScientificPublications.WebUI.Models.BindingModels.User
 {
-    public class LoginBindingModel : BaseBindingModel
+    public class LoginBindingModel : BindingModel
     {
         public string Username { get; set; }
 

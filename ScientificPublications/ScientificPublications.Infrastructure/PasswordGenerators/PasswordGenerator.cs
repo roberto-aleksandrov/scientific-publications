@@ -14,9 +14,9 @@ namespace ScientificPublications.Infrastructure.PasswordGenerators
             _secret = secret.SecretKey;
         }
 
-        public string Create(string hashable)
+        public string Create(string hashable, string salt)
         {
-            var passwordEncryptor = new PasswordEncryptor(hashable, _secret, Guid.NewGuid().ToString());
+            var passwordEncryptor = new PasswordEncryptor(hashable, _secret, salt);
             return passwordEncryptor.DefaultPasswordEncrypted;
         }
 

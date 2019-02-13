@@ -1,4 +1,5 @@
 ﻿using FluentValidation.Results;
+using ScientificPublications.Application.Constants.Validators;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,12 +14,23 @@ namespace ScientificPublications.Application.Exceptions
             Failures = new Dictionary<string, string[]>();
         }
 
+        public ValidationException(ErrorTypes errorType, List<ValidationFailure> failures)
+            : this(failures)
+        {
+            ErrorType = errorType;
+        }
+
+        public ValidationException(ErrorTypes errorType)
+        {
+            ErrorType = errorType;
+        }
+
         public ValidationException(List<ValidationFailure> failures)
             : this()
         {
             var propertyNames = failures
-                .Select(e => e.PropertyName)
-                .Distinct();
+            .Select(e => e.PropertyName)
+            .Distinct();
 
             foreach (var propertyName in propertyNames)
             {
@@ -32,5 +44,7 @@ namespace ScientificPublications.Application.Exceptions
         }
 
         public IDictionary<string, string[]> Failures { get; }
+
+        public ErrorTypes ErrorType{ get; }
     }
 }

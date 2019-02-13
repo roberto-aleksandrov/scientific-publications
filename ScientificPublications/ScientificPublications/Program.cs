@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using ScientificPublications.Infrastructure;
+using System.Net.Http;
 
 namespace ScientificPublications.WebUI
 {

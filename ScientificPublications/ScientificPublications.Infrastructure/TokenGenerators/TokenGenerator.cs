@@ -1,6 +1,7 @@
 ﻿namespace Calendar.Utilities.TokenGenerators
 {
     using Microsoft.IdentityModel.Tokens;
+    using Newtonsoft.Json;
     using ScientificPublications.Application.Interfaces.Authentication;
     using System;
     using System.Collections.Generic;
@@ -13,13 +14,13 @@
     {
         public string GenerateToken(IDictionary<string, string> payload, string secretKey, string iss, string audience, double expirationHours)
         {
-            Claim[] claims = payload.Select(n => new Claim(n.Key, n.Value)).ToArray();
+            var claims = payload.Select(n => new Claim(n.Key, n.Value)).ToArray();
 
-            SigningCredentials credentials = new SigningCredentials(
+            var credentials = new SigningCredentials(
                 new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey)),
                 SecurityAlgorithms.HmacSha256);
 
-            JwtSecurityToken token = new JwtSecurityToken(
+            var token = new JwtSecurityToken(
                 issuer: iss,
                 audience: audience,
                 claims: claims,
@@ -37,7 +38,8 @@
 
         public string Decode(string token, string secret)
         {
-            return null;
+            var jwtSecurityToken = new JwtSecurityTokenHandler().ReadJwtToken(token) as JwtSecurityToken;
+            return JsonConvert.SerializeObject(jwtSecurityToken.Claims.ToDictionary(c => c.Type, c => c.Value));
         }
     }
 }

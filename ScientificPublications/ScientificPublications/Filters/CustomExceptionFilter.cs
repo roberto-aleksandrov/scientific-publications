@@ -2,6 +2,7 @@
 using System.Net;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using ScientificPublications.Application.Constants.Validators;
 using ScientificPublications.Application.Exceptions;
 
 namespace ScientificPublications.WebUI.Filters
@@ -13,10 +14,11 @@ namespace ScientificPublications.WebUI.Filters
         {
             if (context.Exception is ValidationException)
             {
+                var exception = context.Exception as ValidationException;
+                
                 context.HttpContext.Response.ContentType = "application/json";
-                context.HttpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                context.Result = new JsonResult(
-                    ((ValidationException)context.Exception).Failures);
+                context.HttpContext.Response.StatusCode = (int)exception.ErrorType;
+                context.Result = new JsonResult(((ValidationException)context.Exception).Failures);
 
                 return;
             }        

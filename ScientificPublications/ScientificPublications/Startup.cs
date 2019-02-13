@@ -12,7 +12,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using ScientificPublications.Application.Features.Users.Commands.RegisterUser;
-using ScientificPublications.Application.Infrastructure.Validators;
+using ScientificPublications.Application.AutoMapper;
+using ScientificPublications.Application.Middlewares;
 using ScientificPublications.Application.Interfaces.Authentication;
 using ScientificPublications.Application.Interfaces.Data;
 using ScientificPublications.Application.Interfaces.Hasher;
@@ -28,6 +29,8 @@ using ScientificPublications.WebUI.Models.Options;
 using Swashbuckle.AspNetCore.Swagger;
 using System.Reflection;
 using System.Text;
+using ScientificPublications.Domain.Entities.Publications;
+using ScientificPublications.Domain.Entities.Users;
 
 namespace ScientificPublications.WebUI
 {
@@ -48,6 +51,7 @@ namespace ScientificPublications.WebUI
 
         private void RegisterMediatr(IServiceCollection services)
         {
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(AuthorizationBehavior<,>));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
             services.AddMediatR(typeof(RegisterUserCommandHandler).GetTypeInfo().Assembly);
         }
@@ -55,11 +59,15 @@ namespace ScientificPublications.WebUI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddAutoMapper(new Assembly[] { typeof(BmToRequestProfile).GetTypeInfo().Assembly });
+            services.AddAutoMapper(new Assembly[] { typeof(BmToRequestProfile).GetTypeInfo().Assembly, typeof(EntityToViewModelProfile).GetTypeInfo().Assembly });
 
-            services.AddMvc(options => options.Filters.Add(typeof(CustomExceptionFilterAttribute)))
-               .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
-               .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<RegisterUserCommandValidator>());
+            services.AddMvc(options =>
+            {
+                options.Filters.Add(typeof(CustomExceptionFilterAttribute));
+                options.Filters.Add(new TypeFilterAttribute(typeof(AuthenticationFilter)));
+            })
+            .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
+            .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<RegisterUserCommandValidator>());
 
             services.Configure<CookiePolicyOptions>(options =>
             {
@@ -72,8 +80,8 @@ namespace ScientificPublications.WebUI
             RegisterMediatr(services);
 
             services.AddOptions();
-            services.AddTransient<IAsyncRepository<User>, EfRepository<User>>();
-            services.AddTransient<IRepository<User>, EfRepository<User>>();
+            services.AddTransient<IAsyncRepository<PublicationEntity>, EfRepository<PublicationEntity>>();
+            services.AddTransient<IAsyncRepository<UserEntity>, EfRepository<UserEntity>>();
             services.AddTransient<IData, ScientificPublicationsData>();
             services.AddTransient<IHasher, PasswordGenerator>();
             services.AddTransient<ITokenGenerator, TokenGenerator>();

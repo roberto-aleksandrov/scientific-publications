@@ -1,5 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using ScientificPublications.Domain.Entities;
+using ScientificPublications.Domain.Entities.AuthorsPublications;
+using ScientificPublications.Domain.Entities.Publications;
+using ScientificPublications.Domain.Entities.Users;
 
 namespace ScientificPublications.Infrastructure
 {
@@ -9,11 +16,40 @@ namespace ScientificPublications.Infrastructure
             : base(options) { }
 
 
-        public DbSet<User> Users { get; set; }
+        public DbSet<UserEntity> Users { get; set; }
+
+        public DbSet<AuthorEntity> Authors { get; set; }
+
+        public DbSet<NonCathedralAuthorEntity> NonCathedralAuthors { get; set; }
+
+        public DbSet<CathedralAuthorEntity> CathedralAuthors { get; set; }
+
+        public DbSet<PublicationEntity> Publications { get; set; }        
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            //builder.ApplyConfiguration<User>();
+            builder.ApplyConfigurationsFromAssembly(typeof(ScientificPublicationsContext).Assembly);
+        }
+
+        public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var createdEntities = ChangeTracker.Entries().Where(E => E.State == EntityState.Added).ToList();
+
+            createdEntities.ForEach(e =>
+            {
+                var now = DateTime.Now;
+                e.Property(nameof(Entity.CreationDate)).CurrentValue = now;
+                e.Property(nameof(Entity.UpdateDate)).CurrentValue = now;
+            });
+
+            var editedEntities = ChangeTracker.Entries().Where(E => E.State == EntityState.Modified).ToList();
+
+            editedEntities.ForEach(e =>
+            {
+                e.Property(nameof(Entity.UpdateDate)).CurrentValue = DateTime.Now;
+            });
+
+            return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
         }
 
     }

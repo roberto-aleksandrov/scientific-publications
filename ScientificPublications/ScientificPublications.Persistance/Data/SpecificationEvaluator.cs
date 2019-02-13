@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace ScientificPublications.Infrastructure.Data
 {
-    public class SpecificationEvaluator<T> where T : BaseEntity
+    public class SpecificationEvaluator<T> where T : Entity
     {
         public static IQueryable<T> GetQuery(IQueryable<T> inputQuery, ISpecification<T> specification)
         {

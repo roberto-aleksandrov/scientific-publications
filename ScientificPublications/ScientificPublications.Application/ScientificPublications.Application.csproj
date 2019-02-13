@@ -15,4 +15,8 @@
     <ProjectReference Include="..\ScientificPublications.Domain\ScientificPublications.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Features\Publications\Queries\" />
+  </ItemGroup>
+
 </Project>

@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using ScientificPublications.Application.Features.Publications.Commands.CreatePublication;
 using ScientificPublications.Application.Features.Users.Commands.RegisterUser;
 using ScientificPublications.Application.Features.Users.Queries;
+using ScientificPublications.WebUI.Models.BindingModels.Publications;
 using ScientificPublications.WebUI.Models.BindingModels.User;
 
 namespace ScientificPublications.WebUI.AutoMapper.Profiles
@@ -10,7 +12,10 @@ namespace ScientificPublications.WebUI.AutoMapper.Profiles
         public BmToRequestProfile()
         {
             CreateMap<LoginBindingModel, LoginQuery>();
+
             CreateMap<RegisterUserBindingModel, RegisterUserCommand>();
+
+            CreateMap<CreatePublicationBindingModel, CreatePublicationCommand>();
         }
     }
 }
