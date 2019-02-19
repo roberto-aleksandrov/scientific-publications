@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 namespace ScientificPublications.Application.Validators
 {
     public class AnyAsyncValidator<TProperty, TEntity> : AsyncValidator
-          where TEntity : Entity
+          where TEntity : BaseEntity
     {
         private readonly Func<TProperty, Expression<Func<TEntity, bool>>> _criteria;
         private readonly IAsyncRepository<TEntity> _repository;

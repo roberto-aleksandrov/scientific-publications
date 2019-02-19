@@ -1,10 +1,11 @@
 ﻿using ScientificPublications.Domain.Entities;
+using ScientificPublications.Domain.Entities.Users;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace ScientificPublications.Application.Interfaces.Data
 {
-    public interface IAsyncRepository<T> where T : Entity
+    public interface IAsyncRepository<T> where T : BaseEntity
     {
         Task<T> GetByIdAsync(int id);
 

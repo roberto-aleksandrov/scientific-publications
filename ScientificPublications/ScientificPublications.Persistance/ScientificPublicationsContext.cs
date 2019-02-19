@@ -38,15 +38,15 @@ namespace ScientificPublications.Infrastructure
             createdEntities.ForEach(e =>
             {
                 var now = DateTime.Now;
-                e.Property(nameof(Entity.CreationDate)).CurrentValue = now;
-                e.Property(nameof(Entity.UpdateDate)).CurrentValue = now;
+                e.Property(nameof(BaseEntity.CreationDate)).CurrentValue = now;
+                e.Property(nameof(BaseEntity.UpdateDate)).CurrentValue = now;
             });
 
             var editedEntities = ChangeTracker.Entries().Where(E => E.State == EntityState.Modified).ToList();
 
             editedEntities.ForEach(e =>
             {
-                e.Property(nameof(Entity.UpdateDate)).CurrentValue = DateTime.Now;
+                e.Property(nameof(BaseEntity.UpdateDate)).CurrentValue = DateTime.Now;
             });
 
             return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);

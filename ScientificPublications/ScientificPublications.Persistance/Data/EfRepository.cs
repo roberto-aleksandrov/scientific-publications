@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ScientificPublications.Infrastructure.Data
 {
-    public class EfRepository<T> : IAsyncRepository<T> where T : Entity
+    public class EfRepository<T> : IAsyncRepository<T> where T : BaseEntity
     {
         protected readonly ScientificPublicationsContext _dbContext;
 

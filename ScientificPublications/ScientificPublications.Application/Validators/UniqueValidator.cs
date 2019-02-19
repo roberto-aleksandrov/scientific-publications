@@ -19,10 +19,16 @@ namespace ScientificPublications.Application.Validators
 
         protected override void PrepareMessageFormatterForValidationError(PropertyValidatorContext context)
         {
-            var unExp = (UnaryExpression)_expression.Body;
-            var name = ((MemberExpression)unExp.Operand).Member.Name;
-
-            context.MessageFormatter.AppendArgument("PropertyName", name);
+            try
+            {
+                var unExp = (UnaryExpression)_expression.Body;
+                var name = ((MemberExpression)unExp.Operand).Member.Name;
+                context.MessageFormatter.AppendArgument("PropertyName", name);
+            }
+            catch
+            {
+                context.MessageFormatter.AppendArgument("PropertyName", "");
+            }
         }
 
         protected override bool IsValid(PropertyValidatorContext context)

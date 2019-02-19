@@ -9,15 +9,15 @@ namespace ScientificPublications.Application.Features.Users.Commands.RegisterUse
         public RegisterUserCommandValidator(IData data)
         {
             CascadeMode = CascadeMode.StopOnFirstFailure;
-
+            
             RuleFor(n => n.Username)
-                .MinimumLength(4)
                 .NotEmpty()
-                .None(data.Users, username => userEntity => userEntity.Username == username);
+                .MinimumLength(4)
+                .HasNoneDb(data.Users, username => userEntity => userEntity.Username == username);
 
             RuleFor(n => n.Password)
-                .MinimumLength(8)
-                .NotEmpty();
+                .NotEmpty()
+                .MinimumLength(8);
         }
     }
 }

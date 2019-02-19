@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using ScientificPublications.Application.Features.Users.Models;
 using ScientificPublications.Application.Interfaces.Authentication;
 using ScientificPublications.Application.Interfaces.Data;
 using System;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace ScientificPublications.Application.Features.Users.Queries
 {
-    public class LoginQueryHandler : IRequestHandler<LoginQuery, LoginViewModel>
+    public class LoginQueryHandler : IRequestHandler<LoginQuery, LoginDto>
     {
         private readonly IData _data;
         private readonly ITokenGenerator _tokenGenerator;
@@ -23,7 +24,7 @@ namespace ScientificPublications.Application.Features.Users.Queries
             _authenticationOptions = authenticationOptions;
         }
 
-        public async Task<LoginViewModel> Handle(LoginQuery request, CancellationToken cancellationToken)
+        public async Task<LoginDto> Handle(LoginQuery request, CancellationToken cancellationToken)
         {
             var payload = new Dictionary<string, string>
             {
@@ -37,7 +38,7 @@ namespace ScientificPublications.Application.Features.Users.Queries
                 _authenticationOptions.Audience,
                 _authenticationOptions.ExpirationHours);
 
-            return new LoginViewModel { Token = token };
+            return new LoginDto { Token = token };
         }
     }
 }

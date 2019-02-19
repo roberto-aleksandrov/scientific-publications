@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using AutoMapper;
+using MediatR;
 
 namespace ScientificPublications.Application.Common.Requests
 {

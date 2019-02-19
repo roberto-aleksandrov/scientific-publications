@@ -9,5 +9,12 @@ namespace ScientificPublications.Application.Interfaces.Data
         IAsyncRepository<UserEntity> Users { get; }
 
         IAsyncRepository<PublicationEntity> Publications { get; }
+
+        IAsyncRepository<AuthorEntity> Authors { get; }
+
+        IAsyncRepository<CathedralAuthorEntity> CathedralAuthors{ get; }
+
+        IAsyncRepository<NonCathedralAuthorEntity> NonCathedralAuthors{ get; }
+
     }
 }

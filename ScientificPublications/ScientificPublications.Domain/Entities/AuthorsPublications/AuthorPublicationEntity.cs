@@ -3,7 +3,7 @@ using ScientificPublications.Domain.Entities.Users;
 
 namespace ScientificPublications.Domain.Entities.AuthorsPublications
 {
-    public class AuthorPublicationEntity : Entity
+    public class AuthorPublicationEntity : BaseEntity
     {
         public int AuthorId { get; set; }
 

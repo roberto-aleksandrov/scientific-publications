@@ -1,6 +1,6 @@
 ﻿namespace ScientificPublications.Domain.Entities.Users
 {
-    public class UserEntity : Entity
+    public class UserEntity : BaseEntity
     {
         public AuthorEntity Author { get; set; }
 

@@ -1,50 +1,72 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using ScientificPublications.Application.Interfaces.Hasher;
 using ScientificPublications.Infrastructure;
+using ScientificPublications.Infrastructure.Interfaces.PasswordGenerators;
+using ScientificPublications.Infrastructure.PasswordGenerators;
+using ScientificPublications.Integration.Tests.Seed;
+using ScientificPublications.WebUI.Models.Common;
+using System;
 
 namespace ScientificPublications.Integration.Tests.Factories
 {
     public class CustomWebApplicationFactory<TStartup> : WebApplicationFactory<TStartup> where TStartup : class
     {
+        public ScientificPublicationsContext Context { get; private set; }
+
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+            Context?.Dispose();
+        }
+
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
             builder.ConfigureServices(services =>
             {
-                // Create a new service provider.
+                var configuration = new ConfigurationBuilder()
+                   .AddJsonFile("appsettings.json")
+                   .Build();
+
                 var serviceProvider = new ServiceCollection()
                     .AddEntityFrameworkInMemoryDatabase()
                     .BuildServiceProvider();
-                
+
                 services.AddDbContext<ScientificPublicationsContext>(options =>
                 {
-                    options.UseInMemoryDatabase("InMemoryDbForTesting");
+                    options.UseInMemoryDatabase("InMemoryTestDb");
                     options.UseInternalServiceProvider(serviceProvider);
                 });
-                                
+
+                services.AddTransient<IHasher, PasswordGenerator>();
+
+                services.AddSingleton<IPasswordGeneratorOptions>(configuration.GetSection("Auth").Get<PasswordGeneratorOptions>());
+
+                Context = services.BuildServiceProvider().GetRequiredService<ScientificPublicationsContext>();
+
                 using (var scope = services.BuildServiceProvider().CreateScope())
                 {
                     var scopedServices = scope.ServiceProvider;
-                    var db = scopedServices.GetRequiredService<ScientificPublicationsContext>();
-                    //var logger = scopedServices
-                    //    .GetRequiredService<ILogger<CustomWebApplicationFactory<TStartup>>>();
+                    var hasher = scopedServices.GetRequiredService<IHasher>();
+                    var logger = scopedServices
+                        .GetRequiredService<ILogger<CustomWebApplicationFactory<TStartup>>>();
 
-                    // Ensure the database is created.
-                    db.Database.EnsureCreated();
+                    Context.Database.EnsureCreated();
 
-                    //try
-                    //{
-                    //    // Seed the database with test data.
-                    //    //Utilities.InitializeDbForTests(db);
-                    //}
-                    //catch (Exception ex)
-                    //{
-                    //    logger.LogError(ex, $"An error occurred seeding the " +
-                    //        "database with test messages. Error: {ex.Message}");
-                    //}
+                    try
+                    {
+                        ScientificPublicationsSeedTest.Seed(Context, hasher);
+                    }
+                    catch (Exception ex)
+                    {
+                        logger.LogError(ex, $"An error occurred seeding the database with test messages. Error: {ex.Message}");
+                    }
                 }
+                var authors = Context.Authors.ToListAsync().Result;
             });
         }
     }

@@ -5,12 +5,12 @@ using System.Linq;
 
 namespace ScientificPublications.Infrastructure.Data
 {
-    public class SpecificationEvaluator<T> where T : Entity
+    public class SpecificationEvaluator<T> where T : BaseEntity
     {
         public static IQueryable<T> GetQuery(IQueryable<T> inputQuery, ISpecification<T> specification)
-        {
+        {   
             var query = inputQuery;
-            
+
             if (specification.Criteria != null)
             {
                 query = query.Where(specification.Criteria);

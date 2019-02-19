@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using ScientificPublications.Application.Attributes;
 using ScientificPublications.Application.Extensions;
+using ScientificPublications.Application.Features.Users.Models;
 using ScientificPublications.Application.Interfaces.Data;
 using ScientificPublications.Application.Interfaces.Hasher;
 
@@ -21,7 +22,7 @@ namespace ScientificPublications.Application.Features.Users.Queries
                 .NotEmpty();
 
             RuleFor(n => n)
-                .Any(data.Users, request => entity =>
+                .HasAnyDb(data.Users, request => entity =>
                         request.Username == entity.Username
                         && request.Password == hasher.Decrypt(entity.Password, entity.Salt));
         }

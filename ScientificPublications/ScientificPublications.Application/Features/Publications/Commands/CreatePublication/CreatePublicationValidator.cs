@@ -1,9 +1,9 @@
 ﻿using FluentValidation;
 using ScientificPublications.Application.Attributes;
 using ScientificPublications.Application.Extensions;
-using ScientificPublications.Application.Features.Publications.Models;
 using ScientificPublications.Application.Interfaces.Data;
-using System.Collections.Generic;
+using ScientificPublications.Application.Spcifications;
+using ScientificPublications.Domain.Entities.Users;
 using System.Linq;
 
 namespace ScientificPublications.Application.Features.Publications.Commands.CreatePublication
@@ -14,15 +14,21 @@ namespace ScientificPublications.Application.Features.Publications.Commands.Crea
     {
         public CreatePublicationValidator(IData data)
         {
+            CascadeMode = CascadeMode.StopOnFirstFailure;
+
+            RuleFor(n => n.Title)
+                .NotEmpty();
+
             RuleFor(n => n.Text)
                 .NotEmpty();
 
-
-            RuleFor(n => n.AuthorsPublications)
-                .HasUnique(n => n.AuthorId);
-
-            //RuleFor(n => n.UsersPublications)
-            //    .None(data.Users, authorsPublications => entity => !authorsPublications.Any(n => n.AuthorId == entity.Id));
+            RuleFor(n => n.AuthorIds)
+                .NotEmpty()
+                .HasUnique(n => n)
+                .IsTrueDb(data.Authors,
+                    (authorIds, authors) => !authorIds.Any(id => authors.All(author => id != author.Id)),
+                    (authorIds) => new BaseSpecification<AuthorEntity>(entity => authorIds.Contains(entity.Id))
+                );
         }
     }
 }

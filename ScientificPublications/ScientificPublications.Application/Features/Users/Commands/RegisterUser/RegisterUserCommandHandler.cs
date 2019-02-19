@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
+using ScientificPublications.Application.Common.Requests;
+using ScientificPublications.Application.Features.Users.Models;
 using ScientificPublications.Application.Interfaces.Data;
 using ScientificPublications.Application.Interfaces.Hasher;
 using ScientificPublications.Domain.Entities.Users;
@@ -9,30 +11,21 @@ using System.Threading.Tasks;
 
 namespace ScientificPublications.Application.Features.Users.Commands.RegisterUser
 {
-    public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, RegisterUserViewModel>
+    public class RegisterUserCommandHandler : BaseRequestHandler<RegisterUserCommand, UserDto>
     {
-        private readonly IData _data;
         private readonly IHasher _hasher;
-        private readonly IMapper _mapper;
 
-        public RegisterUserCommandHandler(IData data, IHasher hasher, IMapper mapper)
+        public RegisterUserCommandHandler(IData data, IMapper mapper, IHasher hasher)
+            : base(data, mapper)
         {
-            _data = data;
             _hasher = hasher;
-            _mapper = mapper;
         }
 
-        public async Task<RegisterUserViewModel> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
+        public override async Task<UserDto> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
         {
-            var salt = Guid.NewGuid().ToString();
-            var user = await _data.Users.AddAsync(new UserEntity
-            {
-                Username = request.Username,
-                Password = _hasher.Create(request.Password, salt),
-                Salt = salt
-            });
+            var user = await _data.Users.AddAsync(_mapper.Map<UserEntity>(request));
 
-            return _mapper.Map<RegisterUserViewModel>(user);
+            return _mapper.Map<UserDto>(user);
         }
     }
 }

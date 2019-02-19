@@ -1,15 +1,14 @@
 ﻿using AutoMapper;
 using MediatR;
+using ScientificPublications.Application.Features.Publications.Models;
 using ScientificPublications.Application.Interfaces.Data;
-using ScientificPublications.Application.Spcifications.Users;
 using ScientificPublications.Domain.Entities.Publications;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace ScientificPublications.Application.Features.Publications.Commands.CreatePublication
 {
-    public class CreatePublicationCommandHandler : IRequestHandler<CreatePublicationCommand, CreatePublicationViewModel>
+    public class CreatePublicationCommandHandler : IRequestHandler<CreatePublicationCommand, PublicationDto>
     {
         private readonly IData _data;
         private readonly IMapper _mapper;
@@ -20,12 +19,14 @@ namespace ScientificPublications.Application.Features.Publications.Commands.Crea
             _mapper = mapper;
         }
 
-        public async Task<CreatePublicationViewModel> Handle(CreatePublicationCommand request, CancellationToken cancellationToken)
+        public async Task<PublicationDto> Handle(CreatePublicationCommand request, CancellationToken cancellationToken)
         {
-            var entity = await _data.Publications.AddAsync(_mapper.Map<PublicationEntity>(request));        
-            var vm = _mapper.Map<CreatePublicationViewModel>(entity);
+            var publicationEntity = _mapper.Map<PublicationEntity>(request);
+            await _data.Publications.AddAsync(publicationEntity);
 
-            return vm;
+            var publicationDto = _mapper.Map<PublicationDto>(publicationEntity);
+
+            return publicationDto;
         }
     }
 }

@@ -3,12 +3,14 @@ using System.Collections.Generic;
 
 namespace ScientificPublications.Domain.Entities.Publications
 {
-    public class PublicationEntity : Entity
+    public class PublicationEntity : BaseEntity
     {
         public PublicationEntity()
         {
             AuthorsPublications = new List<AuthorPublicationEntity>();
         }
+
+        public string Title { get; set; }
 
         public string Text { get; set; }
 
