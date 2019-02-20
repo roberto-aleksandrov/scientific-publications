@@ -4,20 +4,19 @@ using ScientificPublications.Application.Interfaces.Data;
 using ScientificPublications.Domain.Entities;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace ScientificPublications.Application.Validators
 {
-    public class TestDbValidator<TProperty, TEntity> : AsyncValidator
+    public class IsTrueAsyncValidator<TProperty, TEntity> : AsyncValidator
           where TEntity : BaseEntity
     {
         private readonly Func<TProperty, IReadOnlyCollection<TEntity>, bool> _criteria;
         private readonly Func<TProperty, ISpecification<TEntity>> _spec;
         private readonly IAsyncRepository<TEntity> _repository;
 
-        public TestDbValidator(
+        public IsTrueAsyncValidator(
              Func<TProperty, IReadOnlyCollection<TEntity>, bool> criteria,
             IAsyncRepository<TEntity> repository,
             Func<TProperty, ISpecification<TEntity>> spec)

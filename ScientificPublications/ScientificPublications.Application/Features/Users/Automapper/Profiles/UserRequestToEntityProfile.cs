@@ -3,7 +3,7 @@ using ScientificPublications.Application.Features.Users.Automapper.Resolvers;
 using ScientificPublications.Application.Features.Users.Commands.RegisterUser;
 using ScientificPublications.Domain.Entities.Users;
 
-namespace ScientificPublications.Application.Features.Users.Automapper.Profiles
+namespace ScientificPublications.Application.Features.Users.AutoMapper.Profiles
 {
     public class UserRequestToEntityProfile : Profile
     {

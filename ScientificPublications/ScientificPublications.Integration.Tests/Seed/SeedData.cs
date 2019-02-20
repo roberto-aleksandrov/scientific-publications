@@ -1,5 +1,6 @@
 ﻿using ScientificPublications.Domain.Entities.Publications;
 using ScientificPublications.Domain.Entities.Users;
+using ScientificPublications.Domain.Enums;
 using System;
 
 namespace ScientificPublications.Integration.Tests.Seed
@@ -39,6 +40,13 @@ namespace ScientificPublications.Integration.Tests.Seed
             new PublicationEntity {
                 Title = "Random Title2",
                 Text = "Random Text2"
+            }
+        };
+
+        public static RoleEntity[] Roles => new RoleEntity[]
+        {
+            new RoleEntity {
+                Role = Role.Author,
             }
         };
     }

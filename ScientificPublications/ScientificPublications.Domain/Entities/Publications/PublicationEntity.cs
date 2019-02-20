@@ -10,6 +10,8 @@ namespace ScientificPublications.Domain.Entities.Publications
             AuthorsPublications = new List<AuthorPublicationEntity>();
         }
 
+        public int Id { get; set; }
+
         public string Title { get; set; }
 
         public string Text { get; set; }

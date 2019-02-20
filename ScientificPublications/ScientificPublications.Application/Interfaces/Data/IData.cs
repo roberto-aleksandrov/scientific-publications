@@ -16,5 +16,9 @@ namespace ScientificPublications.Application.Interfaces.Data
 
         IAsyncRepository<NonCathedralAuthorEntity> NonCathedralAuthors{ get; }
 
+        IAsyncRepository<RoleEntity> Roles { get; }
+
+        IAsyncRepository<UserRoleEntity> UserRoles { get; }
+
     }
 }

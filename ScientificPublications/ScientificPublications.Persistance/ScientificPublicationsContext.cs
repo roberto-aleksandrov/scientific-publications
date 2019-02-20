@@ -24,7 +24,11 @@ namespace ScientificPublications.Infrastructure
 
         public DbSet<CathedralAuthorEntity> CathedralAuthors { get; set; }
 
-        public DbSet<PublicationEntity> Publications { get; set; }        
+        public DbSet<PublicationEntity> Publications { get; set; }
+
+        public DbSet<UserRoleEntity> UsersRoles { get; set; }
+
+        public DbSet<RoleEntity> Roles { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

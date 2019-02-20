@@ -21,10 +21,10 @@ namespace ScientificPublications.Application.Extensions
         }
 
         public static IRuleBuilderOptions<TRequest, TProperty> HasAnyDb<TEntity, TRequest, TProperty>(
-         this IRuleBuilder<TRequest, TProperty> ruleBuilder,
-         IAsyncRepository<TEntity> repository,
-         Func<TProperty, Expression<Func<TEntity, bool>>> criteria)
-             where TEntity : BaseEntity
+            this IRuleBuilder<TRequest, TProperty> ruleBuilder,
+            IAsyncRepository<TEntity> repository,
+            Func<TProperty, Expression<Func<TEntity, bool>>> criteria)
+                 where TEntity : BaseEntity
         {
             return ruleBuilder.SetValidator(new AnyAsyncValidator<TProperty, TEntity>(criteria, repository));
         }
@@ -34,24 +34,22 @@ namespace ScientificPublications.Application.Extensions
             IAsyncRepository<TEntity> repository,
             Func<TProperty, IReadOnlyCollection<TEntity>, bool> criteria,
             Func<TProperty, ISpecification<TEntity>> spec = null)
-          where TEntity : BaseEntity
+                where TEntity : BaseEntity
         {
-            return ruleBuilder.SetValidator(new TestDbValidator<TProperty, TEntity>(criteria, repository, spec));
+            return ruleBuilder.SetValidator(new IsTrueAsyncValidator<TProperty, TEntity>(criteria, repository, spec));
         }
 
         public static IRuleBuilderOptions<TRequest, IEnumerable<TProperty>> HasUnique<TRequest, TProperty>(
             this IRuleBuilder<TRequest, IEnumerable<TProperty>> ruleBuilder,
-            Expression<Func<TProperty, object>> expression
-            )
-            where TRequest : IBaseRequest
+            Expression<Func<TProperty, object>> expression)
+                where TRequest : IBaseRequest
 
         {
             return ruleBuilder.SetValidator(new UniqueValidator<TProperty, object>(expression));
         }
         public static IRuleBuilderOptions<TRequest, TRequest> IsValidQuery<TRequest, TEntity>(
-        this IRuleBuilder<TRequest, TRequest> ruleBuilder
-        )
-            where TRequest : IBaseQuery
+            this IRuleBuilder<TRequest, TRequest> ruleBuilder)
+                where TRequest : IBaseQuery
 
         {
             return ruleBuilder.SetValidator(new QueryValidator<TRequest, TEntity>());

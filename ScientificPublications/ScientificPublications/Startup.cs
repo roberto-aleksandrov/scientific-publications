@@ -85,6 +85,9 @@ namespace ScientificPublications.WebUI
             services.AddTransient<IAsyncRepository<AuthorEntity>, EfRepository<AuthorEntity>>();
             services.AddTransient<IAsyncRepository<CathedralAuthorEntity>, EfRepository<CathedralAuthorEntity>>();
             services.AddTransient<IAsyncRepository<NonCathedralAuthorEntity>, EfRepository<NonCathedralAuthorEntity>>();
+            services.AddTransient<IAsyncRepository<UserRoleEntity>, EfRepository<UserRoleEntity>>();
+            services.AddTransient<IAsyncRepository<RoleEntity>, EfRepository<RoleEntity>>();
+            services.AddTransient<IAsyncRepository<UserRoleEntity>, EfRepository<UserRoleEntity>>();
             services.AddTransient<IData, ScientificPublicationsData>();
             services.AddTransient<IHasher, PasswordGenerator>();
             services.AddTransient<ITokenGenerator, TokenGenerator>();

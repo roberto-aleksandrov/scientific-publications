@@ -2,7 +2,6 @@
 using System.Net;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using ScientificPublications.Application.Constants.Validators;
 using ScientificPublications.Application.Exceptions;
 
 namespace ScientificPublications.WebUI.Filters

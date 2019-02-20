@@ -4,12 +4,12 @@ using System.Linq;
 
 namespace ScientificPublications.Application.Spcifications.Users
 {
-    public class UserExistsSpecification : BaseSpecification<UserEntity>
+    public class GetUserSpecification : BaseSpecification<UserEntity>
     {
-        public UserExistsSpecification(string username)
+        public GetUserSpecification(string username)
             : base(n => n.Username == username) { }
 
-        public UserExistsSpecification(IEnumerable<int> userIds)
+        public GetUserSpecification(IEnumerable<int> userIds)
             : base(n => userIds.Contains(n.Id)) { }
     }
 }

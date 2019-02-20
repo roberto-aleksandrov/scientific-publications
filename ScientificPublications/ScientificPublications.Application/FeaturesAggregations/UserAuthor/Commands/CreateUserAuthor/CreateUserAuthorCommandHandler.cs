@@ -3,8 +3,12 @@ using MediatR;
 using ScientificPublications.Application.Common.Requests;
 using ScientificPublications.Application.Features.Authors.Commands.CreateAuthor;
 using ScientificPublications.Application.Features.Authors.Models;
+using ScientificPublications.Application.Features.UserRoles.Commands;
 using ScientificPublications.Application.Features.Users.Commands.RegisterUser;
 using ScientificPublications.Application.Interfaces.Data;
+using ScientificPublications.Application.Spcifications.Roles;
+using ScientificPublications.Domain.Enums;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -26,10 +30,15 @@ namespace ScientificPublications.Application.FeaturesAggregations.UserAuthor.Com
 
             var user = await _mediator.Send(createUserCommand);
 
+            var role = (await _data.Roles.ListAsync(new GetRolesSpecification(Role.Author))).First();
+            var createUserRoleCommand = new CreateUserRoleCommand { UserId = user.Id, RoleId = role.Id };
+
+            await _mediator.Send(createUserRoleCommand);
+
             var createAuthorCommand = _mapper.Map<CreateAuthorCommand>(request);
             createAuthorCommand.UserId = user.Id;
 
-            var author = await _mediator.Send(createAuthorCommand);
+            var author = await _mediator.Send(createAuthorCommand);            
 
             return author;
         }

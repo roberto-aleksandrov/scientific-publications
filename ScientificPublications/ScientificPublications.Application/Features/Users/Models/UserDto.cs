@@ -1,4 +1,6 @@
 ﻿using ScientificPublications.Application.Common.ViewModels;
+using ScientificPublications.Application.Features.UserRoles.Models;
+using System.Collections.Generic;
 
 namespace ScientificPublications.Application.Features.Users.Models
 {
@@ -8,5 +10,6 @@ namespace ScientificPublications.Application.Features.Users.Models
 
         public string Username { get; set; }
 
+        public ICollection<UserRoleDto> UserRoles { get; set; }
     }
 }

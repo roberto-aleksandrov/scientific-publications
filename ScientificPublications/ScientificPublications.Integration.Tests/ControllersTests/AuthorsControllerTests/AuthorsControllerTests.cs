@@ -1,4 +1,5 @@
 ﻿using ScientificPublications.Domain.Entities.Users;
+using ScientificPublications.Domain.Enums;
 using ScientificPublications.Integration.Tests.ControllersTests.Authors.Contracts;
 using ScientificPublications.Integration.Tests.Seed;
 using System;

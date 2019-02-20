@@ -11,6 +11,8 @@ namespace ScientificPublications.Domain.Entities.Users
             Aliases = new List<AuthorAliasEntity>();
         }
 
+        public int Id { get; set; }
+
         public string ScopusId { get; set; }
         
         public int UserId { get; set; }

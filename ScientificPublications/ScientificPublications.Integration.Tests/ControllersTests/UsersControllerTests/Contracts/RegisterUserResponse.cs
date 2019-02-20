@@ -7,5 +7,6 @@ namespace ScientificPublications.Integration.Tests.ControllersTests.UsersControl
     public class RegisterUserResponse : Response
     {
         public string Username { get; set; }
+
     }
 }

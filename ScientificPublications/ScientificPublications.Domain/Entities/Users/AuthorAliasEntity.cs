@@ -2,6 +2,8 @@
 {
     public class AuthorAliasEntity : BaseEntity
     {
+        public int Id { get; set; }
+
         public string Alias { get; set; }
 
         public int AuthorId { get; set; }

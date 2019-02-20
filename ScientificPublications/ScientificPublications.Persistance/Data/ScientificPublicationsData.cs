@@ -11,13 +11,17 @@ namespace ScientificPublications.Infrastructure.Data
             IAsyncRepository<CathedralAuthorEntity> cathedralAuthors,
             IAsyncRepository<NonCathedralAuthorEntity> nonCathedralAuthors,
             IAsyncRepository<AuthorEntity> authors,
-            IAsyncRepository<PublicationEntity> publications)
+            IAsyncRepository<PublicationEntity> publications,
+            IAsyncRepository<RoleEntity> roles,
+            IAsyncRepository<UserRoleEntity> userRoles)
         {
             Users = users;
             Authors = authors;
             CathedralAuthors = cathedralAuthors;
             NonCathedralAuthors = NonCathedralAuthors;
             Publications = publications;
+            Roles = roles;
+            UserRoles = userRoles;
         }
 
         public IAsyncRepository<UserEntity> Users { get; }
@@ -29,5 +33,9 @@ namespace ScientificPublications.Infrastructure.Data
         public IAsyncRepository<NonCathedralAuthorEntity> NonCathedralAuthors { get; }
 
         public IAsyncRepository<PublicationEntity> Publications { get; }
+
+        public IAsyncRepository<RoleEntity> Roles { get; }
+
+        public IAsyncRepository<UserRoleEntity> UserRoles { get; }
     }
 }
