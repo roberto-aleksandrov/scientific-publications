@@ -6,9 +6,7 @@ namespace ScientificPublications.WebUI.Models.BindingModels.Authors
 {
     public class CreateAuthorBindingModel : BindingModel
     {
-        public string Username { get; set; }
-
-        public string Password { get; set; }
+        public RegisterUserBindingModel RegisterUser { get; set; }
 
         public bool IsCathedralMember { get; set; }
 

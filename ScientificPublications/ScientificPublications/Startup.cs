@@ -13,7 +13,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using ScientificPublications.Application.AutoMapper;
+using ScientificPublications.Application.Common.Services;
+using ScientificPublications.Application.Features.Authors.Services;
 using ScientificPublications.Application.Features.Users.Commands.RegisterUser;
+using ScientificPublications.Application.Features.Users.Services.CreateUser;
 using ScientificPublications.Application.Interfaces.Authentication;
 using ScientificPublications.Application.Interfaces.Data;
 using ScientificPublications.Application.Interfaces.Hasher;
@@ -80,6 +83,7 @@ namespace ScientificPublications.WebUI
             RegisterMediatr(services);
 
             services.AddOptions();
+
             services.AddTransient<IAsyncRepository<PublicationEntity>, EfRepository<PublicationEntity>>();
             services.AddTransient<IAsyncRepository<UserEntity>, EfRepository<UserEntity>>();
             services.AddTransient<IAsyncRepository<AuthorEntity>, EfRepository<AuthorEntity>>();
@@ -88,9 +92,13 @@ namespace ScientificPublications.WebUI
             services.AddTransient<IAsyncRepository<UserRoleEntity>, EfRepository<UserRoleEntity>>();
             services.AddTransient<IAsyncRepository<RoleEntity>, EfRepository<RoleEntity>>();
             services.AddTransient<IAsyncRepository<UserRoleEntity>, EfRepository<UserRoleEntity>>();
+
             services.AddTransient<IData, ScientificPublicationsData>();
             services.AddTransient<IHasher, PasswordGenerator>();
             services.AddTransient<ITokenGenerator, TokenGenerator>();
+
+            services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IAuthorService, AuthorService>();
 
             services.AddSingleton<IPasswordGeneratorOptions>(Configuration.GetSection("Auth").Get<PasswordGeneratorOptions>());
             services.AddSingleton<IAuthenticationOptions>(Configuration.GetSection("Auth").Get<AuthenticationOptions>());

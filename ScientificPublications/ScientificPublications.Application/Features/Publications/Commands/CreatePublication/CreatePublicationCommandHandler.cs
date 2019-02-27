@@ -22,6 +22,7 @@ namespace ScientificPublications.Application.Features.Publications.Commands.Crea
         public async Task<PublicationDto> Handle(CreatePublicationCommand request, CancellationToken cancellationToken)
         {
             var publicationEntity = _mapper.Map<PublicationEntity>(request);
+
             await _data.Publications.AddAsync(publicationEntity);
 
             var publicationDto = _mapper.Map<PublicationDto>(publicationEntity);

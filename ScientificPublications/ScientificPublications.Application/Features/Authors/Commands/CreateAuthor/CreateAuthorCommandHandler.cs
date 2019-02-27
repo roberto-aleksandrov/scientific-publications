@@ -1,12 +1,12 @@
 ﻿using AutoMapper;
 using ScientificPublications.Application.Common.Requests;
+using ScientificPublications.Application.Common.Services;
 using ScientificPublications.Application.Features.Authors.Models;
+using ScientificPublications.Application.Features.Authors.Services;
+using ScientificPublications.Application.Features.Users.Services.CreateUser;
 using ScientificPublications.Application.Interfaces.Data;
-using ScientificPublications.Application.Interfaces.Hasher;
-using ScientificPublications.Application.Spcifications;
+using ScientificPublications.Domain.Entities;
 using ScientificPublications.Domain.Entities.Users;
-using ScientificPublications.Domain.Enums;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -14,19 +14,23 @@ namespace ScientificPublications.Application.Features.Authors.Commands.CreateAut
 {
     public class CreateAuthorCommandHandler : BaseRequestHandler<CreateAuthorCommand, AuthorDto>
     {
-        private readonly IHasher _hasher;
+        private readonly IAuthorService _authorService;
+        private readonly IUserService _userSerivce;
 
-        public CreateAuthorCommandHandler(IData data, IMapper mapper, IHasher hasher)
+        public CreateAuthorCommandHandler(IData data, IMapper mapper, IAuthorService authorService, IUserService userSerivce)
             : base(data, mapper)
         {
-            _hasher = hasher;
+            _authorService = authorService;
+            _userSerivce = userSerivce;
         }
 
         public override async Task<AuthorDto> Handle(CreateAuthorCommand request, CancellationToken cancellationToken)
         {
-            var author = _mapper.Map<AuthorEntity>(request);
+            var user = await _userSerivce.CreateUserAsync(request.RegisterUser);
 
-            await _data.Authors.AddAsync(author);
+            var author = await _authorService.CreateAuthorByUserAsync(request, user);
+
+            await _data.SaveChangesAsync();
 
             return _mapper.Map<AuthorDto>(author);
 

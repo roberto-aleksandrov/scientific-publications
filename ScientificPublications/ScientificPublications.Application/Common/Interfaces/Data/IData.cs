@@ -1,6 +1,7 @@
 ﻿using ScientificPublications.Domain.Entities;
 using ScientificPublications.Domain.Entities.Publications;
 using ScientificPublications.Domain.Entities.Users;
+using System.Threading.Tasks;
 
 namespace ScientificPublications.Application.Interfaces.Data
 {
@@ -20,5 +21,9 @@ namespace ScientificPublications.Application.Interfaces.Data
 
         IAsyncRepository<UserRoleEntity> UserRoles { get; }
 
+        IAsyncRepository<TEntity> Repository<TEntity>()
+            where TEntity : BaseEntity;
+
+        Task<int> SaveChangesAsync();
     }
 }

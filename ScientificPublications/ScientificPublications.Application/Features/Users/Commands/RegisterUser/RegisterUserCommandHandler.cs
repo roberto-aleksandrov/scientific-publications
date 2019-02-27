@@ -1,11 +1,10 @@
 ﻿using AutoMapper;
-using MediatR;
 using ScientificPublications.Application.Common.Requests;
+using ScientificPublications.Application.Common.Services;
 using ScientificPublications.Application.Features.Users.Models;
+using ScientificPublications.Application.Features.Users.Services.CreateUser;
 using ScientificPublications.Application.Interfaces.Data;
-using ScientificPublications.Application.Interfaces.Hasher;
 using ScientificPublications.Domain.Entities.Users;
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -13,17 +12,19 @@ namespace ScientificPublications.Application.Features.Users.Commands.RegisterUse
 {
     public class RegisterUserCommandHandler : BaseRequestHandler<RegisterUserCommand, UserDto>
     {
-        private readonly IHasher _hasher;
+        private readonly IUserService _userService;
 
-        public RegisterUserCommandHandler(IData data, IMapper mapper, IHasher hasher)
+        public RegisterUserCommandHandler(IData data, IMapper mapper, IUserService userService)
             : base(data, mapper)
         {
-            _hasher = hasher;
+            _userService = userService;
         }
 
         public override async Task<UserDto> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
         {
-            var user = await _data.Users.AddAsync(_mapper.Map<UserEntity>(request));
+            var user = await _userService.CreateUserAsync(request);
+
+            await _data.SaveChangesAsync();
 
             return _mapper.Map<UserDto>(user);
         }

@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 
 namespace ScientificPublications.Domain.Entities
 {
@@ -9,5 +12,6 @@ namespace ScientificPublications.Domain.Entities
         public DateTime UpdateDate { get; set; }
 
         public Type InstanceType => GetType();
+  
     }
 }

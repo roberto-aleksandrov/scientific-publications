@@ -5,7 +5,6 @@ using ScientificPublications.Application.Features.Publications.Commands.CreatePu
 using ScientificPublications.Application.Features.Publications.Queries.GetPublications;
 using ScientificPublications.Application.Features.Users.Commands.RegisterUser;
 using ScientificPublications.Application.Features.Users.Models;
-using ScientificPublications.Application.FeaturesAggregations.UserAuthor.Commands.CreateUserAuthor;
 using ScientificPublications.WebUI.Models.BindingModels.Authors;
 using ScientificPublications.WebUI.Models.BindingModels.AuthorsAliases;
 using ScientificPublications.WebUI.Models.BindingModels.Publications;
@@ -24,8 +23,6 @@ namespace ScientificPublications.WebUI.AutoMapper.Profiles
             CreateMap<CreatePublicationBindingModel, CreatePublicationCommand>();
 
             CreateMap<CreateAuthorBindingModel, CreateAuthorCommand>();
-
-            CreateMap<CreateAuthorBindingModel, CreateUserAuthorCommand>();
 
             CreateMap<CreateAuthorsAliasBindingModel, CreateAuthorAliasCommand>();
 

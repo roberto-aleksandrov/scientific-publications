@@ -1,5 +1,6 @@
 ﻿using ScientificPublications.Integration.Tests.Attributes;
 using ScientificPublications.Integration.Tests.Contracts;
+using ScientificPublications.Integration.Tests.ControllersTests.UsersControllerTests.Contracts;
 using System.Collections.Generic;
 
 namespace ScientificPublications.Integration.Tests.ControllersTests.Authors.Contracts
@@ -7,9 +8,7 @@ namespace ScientificPublications.Integration.Tests.ControllersTests.Authors.Cont
     [Endpoint("Create")]
     public class CreateAuthorRequest : Request
     {
-        public string Username { get; set; }
-
-        public string Password { get; set; }
+        public RegisterUserRequest RegisterUser { get; set; }
 
         public bool IsCathedralMember { get; set; }
 

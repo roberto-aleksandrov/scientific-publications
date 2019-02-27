@@ -9,8 +9,8 @@ namespace ScientificPublications.Application.Features.Authors.Automapper.Profile
     {
         public AuthorEntityToDtoProfile()
         {
-            CreateMap<AuthorEntity, AuthorDto>()
-                .ForPath(dto => dto.User.UserRoles, otps => otps.MapFrom(entity => entity.User.UserRoles.ToList()));
+            CreateMap<AuthorEntity, AuthorDto>();
+                //.ForPath(dto => dto.User.UserRoles, otps => otps.MapFrom(entity => entity.User.UserRoles.ToList()));
         }
     }
 }

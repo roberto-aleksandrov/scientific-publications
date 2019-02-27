@@ -21,7 +21,7 @@ namespace ScientificPublications.Integration.Tests.ControllersTests.Authors
 
             var response = await PostAsync<CreateAuthorRequest, CreateAuthorResponse>(request);
 
-            Assert.Equal(request.Username, response.User.Username);
+            Assert.Equal(request.RegisterUser.Username, response.User.Username);
             Assert.Equal(request.ScopusId, response.ScopusId);
             Assert.Equal(authorType, response.InstanceType);
             Assert.Equal(string.Join("", request.Aliases), string.Join("", response.Aliases.Select(n => n.Alias)));
@@ -31,11 +31,11 @@ namespace ScientificPublications.Integration.Tests.ControllersTests.Authors
         public async Task CreateAuthor_UsernameExists_Test()
         {
             var request = TestData.CreateAuthorRequest;
-            request.Username = "test";
+            request.RegisterUser.Username = "test";
 
             await PostAsync<CreateAuthorRequest, CreateAuthorResponse>(request);
 
-            Assert.Equal(nameof(request.Username), _errorMessages?.FirstOrDefault().Key);
+            Assert.Equal($"{nameof(request.RegisterUser)}.{nameof(request.RegisterUser.Username)}", _errorMessages?.FirstOrDefault().Key);
         }
 
         [Fact]

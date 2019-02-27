@@ -36,24 +36,25 @@ namespace ScientificPublications.Infrastructure.Data
             return await ApplySpecification(spec).CountAsync();
         }
 
-        public async Task<T> AddAsync(T entity)
+        public Task<T> AddAsync(T entity)
         {
             _dbContext.Set<T>().Add(entity);
-            await _dbContext.SaveChangesAsync();
 
-            return entity;
+            return Task.FromResult(entity);
         }
 
-        public async Task UpdateAsync(T entity)
+        public Task UpdateAsync(T entity)
         {
             _dbContext.Entry(entity).State = EntityState.Modified;
-            await _dbContext.SaveChangesAsync();
+
+            return Task.CompletedTask;
         }
 
-        public async Task DeleteAsync(T entity)
+        public Task DeleteAsync(T entity)
         {
             _dbContext.Set<T>().Remove(entity);
-            await _dbContext.SaveChangesAsync();
+
+            return Task.CompletedTask;
         }
 
         private IQueryable<T> ApplySpecification(ISpecification<T> spec)
