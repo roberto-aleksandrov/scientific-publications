@@ -16,6 +16,8 @@ namespace ScientificPublications.Domain.Entities.Publications
 
         public string Text { get; set; }
 
+        public string ScopusId { get; set; }
+
         public ICollection<AuthorPublicationEntity> AuthorsPublications { get; set; }
     }
 }

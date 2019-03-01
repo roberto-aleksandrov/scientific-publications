@@ -27,6 +27,7 @@ using ScientificPublications.Infrastructure;
 using ScientificPublications.Infrastructure.Data;
 using ScientificPublications.Infrastructure.Interfaces.PasswordGenerators;
 using ScientificPublications.Infrastructure.PasswordGenerators;
+using ScientificPublications.Infrastructure.Scopus.Options;
 using ScientificPublications.WebUI.AutoMapper.Profiles;
 using ScientificPublications.WebUI.Filters;
 using ScientificPublications.WebUI.Models.Common;
@@ -102,6 +103,7 @@ namespace ScientificPublications.WebUI
 
             services.AddSingleton<IPasswordGeneratorOptions>(Configuration.GetSection("Auth").Get<PasswordGeneratorOptions>());
             services.AddSingleton<IAuthenticationOptions>(Configuration.GetSection("Auth").Get<AuthenticationOptions>());
+            services.AddSingleton<IScopusApiOptions>(Configuration.GetSection("Auth").Get<ScopusApiOptions>());
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).
                 AddJwtBearer(options =>

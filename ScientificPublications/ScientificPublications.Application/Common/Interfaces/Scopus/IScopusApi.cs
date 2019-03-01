@@ -1,10 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using ScientificPublications.Application.Common.Models.Scopus;
+using System.Threading.Tasks;
 
 namespace ScientificPublications.Application.Common.Interfaces.Scopus
 {
-    class IScopusApi
+    public interface IScopusApi
     {
+        Task<GetAuthorPublicationsResponse> GetAuthorPublications(GetAuthorPublicationsRequest getAuthorPublicationsRequest);
+
+        Task<GetAuthorDocumentsResponse> GetAuthorDocuments(GetAuthorDocumentsRequest getAuthorDocumentsRequest);
     }
 }
