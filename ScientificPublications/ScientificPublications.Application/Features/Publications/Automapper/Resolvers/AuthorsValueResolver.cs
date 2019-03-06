@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
+using ScientificPublications.Application.Common.Interfaces.Data;
 using ScientificPublications.Application.Features.Publications.Commands.CreatePublication;
-using ScientificPublications.Application.Interfaces.Data;
 using ScientificPublications.Domain.Entities.AuthorsPublications;
 using ScientificPublications.Domain.Entities.Publications;
 using System.Collections.Generic;

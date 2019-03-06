@@ -1,16 +1,16 @@
-﻿using FluentValidation;
+using FluentValidation;
 using MediatR;
-using ScientificPublications.Application.Constants.Validators;
+using ScientificPublications.Application.Common.Attributes;
+using ScientificPublications.Application.Common.Constants.Validators;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using ScientificPublications.Application.Attributes;
 
-namespace ScientificPublications.Application.Middlewares
+namespace ScientificPublications.Application.Common.Middlewares
 {
     public class AuthorizationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
-      where TRequest : Common.Requests.IBaseRequest
+      where TRequest : Models.Mediatr.IBaseRequest
     {
         private readonly IEnumerable<IValidator<TRequest>> _validators;
 
@@ -26,7 +26,7 @@ namespace ScientificPublications.Application.Middlewares
                         .GetCustomAttributes(typeof(AuthenticatedAttribute), true)
                         .FirstOrDefault()).FirstOrDefault();
 
-            if(authorizationAttribute != null && !request.UserInfo.Authenticated)
+            if (authorizationAttribute != null && !request.UserInfo.Authenticated)
             {
                 throw new Exceptions.ValidationException(ErrorTypes.Authentication);
             }

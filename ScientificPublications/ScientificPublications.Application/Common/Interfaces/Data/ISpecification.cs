@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 
-namespace ScientificPublications.Application.Interfaces.Data
+namespace ScientificPublications.Application.Common.Interfaces.Data
 {
     public interface ISpecification<T>
     {

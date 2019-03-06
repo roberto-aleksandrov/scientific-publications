@@ -1,10 +1,10 @@
-﻿using ScientificPublications.Application.Interfaces.Data;
+using ScientificPublications.Application.Common.Interfaces.Data;
 using ScientificPublications.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 
-namespace ScientificPublications.Application.Spcifications
+namespace ScientificPublications.Application.Common.Spcifications
 {
     public class BaseSpecification<T> : ISpecification<T>
         where T : BaseEntity

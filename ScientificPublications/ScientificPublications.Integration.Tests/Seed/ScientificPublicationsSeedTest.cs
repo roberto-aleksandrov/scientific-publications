@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using ScientificPublications.Application.Interfaces.Hasher;
+﻿using ScientificPublications.Application.Common.Interfaces.Hasher;
 using ScientificPublications.Domain.Entities.Users;
 using ScientificPublications.Domain.Enums;
 using ScientificPublications.Infrastructure;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace ScientificPublications.Integration.Tests.Seed
 {
@@ -41,7 +40,7 @@ namespace ScientificPublications.Integration.Tests.Seed
 
                 context.Authors.Add(author);
             });
-            
+
             context.SaveChanges();
         }
 

@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
-namespace ScientificPublications.Application.Interfaces.Authentication
+namespace ScientificPublications.Application.Common.Interfaces.Authentication
 {
     public interface ITokenGenerator
     {

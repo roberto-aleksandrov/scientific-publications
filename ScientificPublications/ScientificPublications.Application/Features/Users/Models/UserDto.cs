@@ -1,4 +1,4 @@
-﻿using ScientificPublications.Application.Common.ViewModels;
+﻿using ScientificPublications.Application.Common.Models.Dtos;
 using ScientificPublications.Application.Features.UserRoles.Models;
 using System.Collections.Generic;
 

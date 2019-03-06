@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ScientificPublications.Application.Attributes
+namespace ScientificPublications.Application.Common.Attributes
 {
     [AttributeUsage(AttributeTargets.Class)]
     public class AuthenticatedAttribute : Attribute

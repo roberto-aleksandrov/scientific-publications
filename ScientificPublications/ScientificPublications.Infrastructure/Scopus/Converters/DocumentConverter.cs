@@ -1,9 +1,9 @@
-﻿using ScientificPublications.Application.Common.Models.Scopus;
+﻿using ScientificPublications.Application.Common.Models.Dtos;
 using ScientificPublications.Infrastructure.Converters;
 
 namespace ScientificPublications.Infrastructure.Scopus.Converters
 {
-    public class DocumentConverter : NameValueConverter<Document>
+    public class DocumentConverter : NameValueConverter<ScopusDocumentDto>
     {
         public DocumentConverter()
         {

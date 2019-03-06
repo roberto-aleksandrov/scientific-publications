@@ -1,8 +1,8 @@
 ﻿using FluentValidation;
-using ScientificPublications.Application.Attributes;
-using ScientificPublications.Application.Extensions;
-using ScientificPublications.Application.Interfaces.Data;
-using ScientificPublications.Application.Spcifications;
+using ScientificPublications.Application.Common.Attributes;
+using ScientificPublications.Application.Common.Extensions;
+using ScientificPublications.Application.Common.Interfaces.Data;
+using ScientificPublications.Application.Common.Spcifications;
 using ScientificPublications.Domain.Entities.Users;
 using System.Linq;
 
@@ -19,8 +19,8 @@ namespace ScientificPublications.Application.Features.Publications.Commands.Crea
             RuleFor(n => n.Title)
                 .NotEmpty();
 
-            RuleFor(n => n.Text)
-                .NotEmpty();
+            //RuleFor(n => n.Text)
+            //    .NotEmpty();
 
             RuleFor(n => n.AuthorIds)
                 .NotEmpty()

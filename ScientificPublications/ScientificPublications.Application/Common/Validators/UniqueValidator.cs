@@ -1,11 +1,11 @@
-﻿using FluentValidation.Validators;
-using ScientificPublications.Application.Constants.Validators;
+using FluentValidation.Validators;
+using ScientificPublications.Application.Common.Constants.Validators;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace ScientificPublications.Application.Validators
+namespace ScientificPublications.Application.Common.Validators
 {
     public class UniqueValidator<T, TKey> : AsyncValidator
     {

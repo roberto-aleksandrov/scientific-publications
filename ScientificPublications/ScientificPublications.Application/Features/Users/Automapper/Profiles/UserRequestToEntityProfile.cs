@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using ScientificPublications.Application.Features.Users.Automapper.Resolvers;
+using ScientificPublications.Application.Features.Users.AutoMapper.Resolvers;
 using ScientificPublications.Application.Features.Users.Commands.RegisterUser;
 using ScientificPublications.Domain.Entities.Users;
 

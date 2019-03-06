@@ -1,7 +1,6 @@
 ﻿using FluentValidation;
-using ScientificPublications.Application.Extensions;
-using ScientificPublications.Application.Features.Users.Commands.RegisterUser;
-using ScientificPublications.Application.Interfaces.Data;
+using ScientificPublications.Application.Common.Extensions;
+using ScientificPublications.Application.Common.Interfaces.Data;
 
 namespace ScientificPublications.Application.Features.Authors.Commands.CreateAuthor
 {
@@ -11,9 +10,6 @@ namespace ScientificPublications.Application.Features.Authors.Commands.CreateAut
         {
             RuleFor(n => n.ScopusId)
                 .HasNoneDb(data.Authors, scopusId => entity => entity.ScopusId == scopusId);
-
-            RuleFor(n => n.RegisterUser)
-                .SetValidator(new RegisterUserCommandValidator(data));
         }
     }
 }

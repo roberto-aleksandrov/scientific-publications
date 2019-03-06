@@ -1,10 +1,10 @@
-﻿using AutoMapper;
+using AutoMapper;
+using ScientificPublications.Application.Common.Interfaces.Hasher;
 using ScientificPublications.Application.Features.Users.Commands.RegisterUser;
-using ScientificPublications.Application.Interfaces.Hasher;
 using ScientificPublications.Domain.Entities.Users;
 using System;
 
-namespace ScientificPublications.Application.Features.Users.Automapper.Resolvers
+namespace ScientificPublications.Application.Features.Users.AutoMapper.Resolvers
 {
     public class UserEntityTypeConverter : ITypeConverter<RegisterUserCommand, UserEntity>
     {

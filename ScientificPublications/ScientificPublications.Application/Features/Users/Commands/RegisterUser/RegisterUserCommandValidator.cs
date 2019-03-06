@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
-using ScientificPublications.Application.Extensions;
-using ScientificPublications.Application.Interfaces.Data;
+using ScientificPublications.Application.Common.Extensions;
+using ScientificPublications.Application.Common.Interfaces.Data;
 
 namespace ScientificPublications.Application.Features.Users.Commands.RegisterUser
 {
@@ -9,7 +9,7 @@ namespace ScientificPublications.Application.Features.Users.Commands.RegisterUse
         public RegisterUserCommandValidator(IData data)
         {
             CascadeMode = CascadeMode.StopOnFirstFailure;
-            
+
             RuleFor(n => n.Username)
                 .NotEmpty()
                 .MinimumLength(4)

@@ -1,5 +1,5 @@
 ﻿using Newtonsoft.Json;
-using ScientificPublications.Application.Common.Requests;
+using ScientificPublications.Application.Common.Models.Mediatr;
 
 namespace ScientificPublications.WebUI.Models.BindingModels
 {

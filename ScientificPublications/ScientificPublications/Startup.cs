@@ -11,22 +11,22 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json;
-using ScientificPublications.Application.AutoMapper;
-using ScientificPublications.Application.Common.Services;
-using ScientificPublications.Application.Features.Authors.Services;
+using ScientificPublications.Application.Common.AutoMapper;
+using ScientificPublications.Application.Common.Interfaces.Authentication;
+using ScientificPublications.Application.Common.Interfaces.Data;
+using ScientificPublications.Application.Common.Interfaces.Hasher;
+using ScientificPublications.Application.Common.Interfaces.Scopus;
+using ScientificPublications.Application.Common.Middlewares;
 using ScientificPublications.Application.Features.Users.Commands.RegisterUser;
-using ScientificPublications.Application.Features.Users.Services.CreateUser;
-using ScientificPublications.Application.Interfaces.Authentication;
-using ScientificPublications.Application.Interfaces.Data;
-using ScientificPublications.Application.Interfaces.Hasher;
-using ScientificPublications.Application.Middlewares;
 using ScientificPublications.Domain.Entities.Publications;
 using ScientificPublications.Domain.Entities.Users;
 using ScientificPublications.Infrastructure;
 using ScientificPublications.Infrastructure.Data;
-using ScientificPublications.Infrastructure.Interfaces.PasswordGenerators;
+using ScientificPublications.Infrastructure.Mediator;
+using ScientificPublications.Infrastructure.Mediator.Interfaces;
 using ScientificPublications.Infrastructure.PasswordGenerators;
+using ScientificPublications.Infrastructure.PasswordGenerators.Interfaces;
+using ScientificPublications.Infrastructure.Scopus;
 using ScientificPublications.Infrastructure.Scopus.Options;
 using ScientificPublications.WebUI.AutoMapper.Profiles;
 using ScientificPublications.WebUI.Filters;
@@ -63,7 +63,7 @@ namespace ScientificPublications.WebUI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddAutoMapper(new Assembly[] { typeof(BmToRequestProfile).GetTypeInfo().Assembly, typeof(EntityToDtoProfile).GetTypeInfo().Assembly });
+            services.AddAutoMapper(new Assembly[] { typeof(BmToRequestProfile).GetTypeInfo().Assembly, typeof(QueryToSpecProfile).GetTypeInfo().Assembly });
 
             services.AddMvc(options =>
             {
@@ -98,12 +98,13 @@ namespace ScientificPublications.WebUI
             services.AddTransient<IHasher, PasswordGenerator>();
             services.AddTransient<ITokenGenerator, TokenGenerator>();
 
-            services.AddTransient<IUserService, UserService>();
-            services.AddTransient<IAuthorService, AuthorService>();
+            services.AddTransient<IScopusApi, ScopusApi>();
 
             services.AddSingleton<IPasswordGeneratorOptions>(Configuration.GetSection("Auth").Get<PasswordGeneratorOptions>());
             services.AddSingleton<IAuthenticationOptions>(Configuration.GetSection("Auth").Get<AuthenticationOptions>());
-            services.AddSingleton<IScopusApiOptions>(Configuration.GetSection("Auth").Get<ScopusApiOptions>());
+            services.AddSingleton<IScopusApiOptions>(Configuration.GetSection("Scopus").Get<ScopusApiOptions>());
+
+            services.AddTransient<IPersistableMediator, PersistableMediator>();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).
                 AddJwtBearer(options =>

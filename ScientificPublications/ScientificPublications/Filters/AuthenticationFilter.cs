@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.Filters;
 using Newtonsoft.Json;
-using ScientificPublications.Application.Common.Requests;
-using ScientificPublications.Application.Interfaces.Authentication;
+using ScientificPublications.Application.Common.Interfaces.Authentication;
+using ScientificPublications.Application.Common.Models.Mediatr;
 using ScientificPublications.WebUI.Models.BindingModels;
 using System.Collections.Generic;
 using System.Linq;

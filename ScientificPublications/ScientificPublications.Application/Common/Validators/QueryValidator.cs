@@ -1,11 +1,11 @@
-﻿using FluentValidation.Validators;
-using ScientificPublications.Application.Common.Requests;
-using ScientificPublications.Application.Constants.Validators;
+using FluentValidation.Validators;
+using ScientificPublications.Application.Common.Constants.Validators;
+using ScientificPublications.Application.Common.Models.Mediatr;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ScientificPublications.Application.Validators
+namespace ScientificPublications.Application.Common.Validators
 {
     public class QueryValidator<TQuery, TEntity> : AsyncValidator
         where TQuery : IBaseQuery
@@ -22,7 +22,7 @@ namespace ScientificPublications.Application.Validators
                 return true;
             }
 
-            var inc = include.Dequeue();         
+            var inc = include.Dequeue();
 
             var prop = entityType.GetProperties()
                     .Where(p => p.Name == inc)
@@ -34,7 +34,7 @@ namespace ScientificPublications.Application.Validators
 
         private bool VerifyIncludes(Queue<string> includes)
         {
-            if(!includes.Any())
+            if (!includes.Any())
             {
                 return true;
             }

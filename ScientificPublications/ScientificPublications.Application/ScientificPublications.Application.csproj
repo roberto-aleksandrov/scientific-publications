@@ -13,11 +13,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Extensions\Extensions.csproj" />
     <ProjectReference Include="..\ScientificPublications.Domain\ScientificPublications.Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Common\Models\Dtos\" />
+    <Folder Include="Common\Spcifications\Roles\" />
     <Folder Include="Features\Authors\Queries\" />
   </ItemGroup>
 

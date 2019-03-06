@@ -1,10 +1,10 @@
-﻿using FluentValidation.Internal;
+using FluentValidation.Internal;
 using FluentValidation.Resources;
 using FluentValidation.Validators;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ScientificPublications.Application.Validators
+namespace ScientificPublications.Application.Common.Validators
 {
     public class AsyncValidator : PropertyValidator
     {

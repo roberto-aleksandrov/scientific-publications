@@ -1,7 +1,7 @@
-﻿using FluentValidation.Validators;
-using ScientificPublications.Application.Constants.Validators;
-using ScientificPublications.Application.Interfaces.Data;
-using ScientificPublications.Application.Spcifications;
+using FluentValidation.Validators;
+using ScientificPublications.Application.Common.Constants.Validators;
+using ScientificPublications.Application.Common.Interfaces.Data;
+using ScientificPublications.Application.Common.Spcifications;
 using ScientificPublications.Domain.Entities;
 using System;
 using System.Linq;
@@ -10,7 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 
-namespace ScientificPublications.Application.Validators
+namespace ScientificPublications.Application.Common.Validators
 {
     public class AnyAsyncValidator<TProperty, TEntity> : AsyncValidator
           where TEntity : BaseEntity
@@ -32,7 +32,7 @@ namespace ScientificPublications.Application.Validators
             var criteria = _criteria((TProperty)context.PropertyValue);
             var specification = new BaseSpecification<TEntity>(criteria);
             var entities = await _repository.ListAsync(specification);
-            
+
             return entities.Any();
         }
     }

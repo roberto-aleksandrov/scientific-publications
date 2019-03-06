@@ -1,4 +1,5 @@
-﻿using ScientificPublications.Application.Spcifications;
+﻿using ScientificPublications.Application.Common.Spcifications;
+using ScientificPublications.Domain.Entities.AuthorsPublications;
 using ScientificPublications.Domain.Entities.Users;
 
 namespace ScientificPublications.Application.Features.Authors.Specifications
@@ -8,7 +9,7 @@ namespace ScientificPublications.Application.Features.Authors.Specifications
         public GetScopusAuthorsSpecification()
             : base(n => n.ScopusId != null)
         {
-            AddInclude(n => n.AuthorsPublications);
+            AddInclude($"{nameof(AuthorEntity.AuthorsPublications)}.{nameof(AuthorPublicationEntity.Publication)}");
         }
     }
 }

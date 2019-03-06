@@ -1,6 +1,6 @@
-﻿using FluentValidation.Resources;
+using FluentValidation.Resources;
 
-namespace ScientificPublications.Application.Constants.Validators
+namespace ScientificPublications.Application.Common.Constants.Validators
 {
     public static class ErrorMessages
     {

@@ -1,32 +1,26 @@
 ﻿using AutoMapper;
-using ScientificPublications.Application.Common.Requests;
-using ScientificPublications.Application.Common.Services;
-using ScientificPublications.Application.Features.Users.Models;
-using ScientificPublications.Application.Features.Users.Services.CreateUser;
-using ScientificPublications.Application.Interfaces.Data;
+using ScientificPublications.Application.Common.Interfaces.Data;
+using ScientificPublications.Application.Common.Models.Mediatr;
 using ScientificPublications.Domain.Entities.Users;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace ScientificPublications.Application.Features.Users.Commands.RegisterUser
 {
-    public class RegisterUserCommandHandler : BaseRequestHandler<RegisterUserCommand, UserDto>
+    public class RegisterUserCommandHandler : BaseRequestHandler<RegisterUserCommand, UserEntity>
     {
-        private readonly IUserService _userService;
-
-        public RegisterUserCommandHandler(IData data, IMapper mapper, IUserService userService)
+        public RegisterUserCommandHandler(IData data, IMapper mapper)
             : base(data, mapper)
         {
-            _userService = userService;
         }
 
-        public override async Task<UserDto> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
+        public override async Task<UserEntity> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
         {
-            var user = await _userService.CreateUserAsync(request);
+            var userEntity = _mapper.Map<UserEntity>(request);
 
-            await _data.SaveChangesAsync();
+            await _data.Users.AddAsync(userEntity);
 
-            return _mapper.Map<UserDto>(user);
+            return userEntity;
         }
     }
 }

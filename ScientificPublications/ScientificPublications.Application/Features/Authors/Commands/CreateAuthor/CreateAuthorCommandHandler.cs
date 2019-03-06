@@ -1,39 +1,41 @@
 ﻿using AutoMapper;
-using ScientificPublications.Application.Common.Requests;
-using ScientificPublications.Application.Common.Services;
-using ScientificPublications.Application.Features.Authors.Models;
-using ScientificPublications.Application.Features.Authors.Services;
-using ScientificPublications.Application.Features.Users.Services.CreateUser;
-using ScientificPublications.Application.Interfaces.Data;
-using ScientificPublications.Domain.Entities;
+using MediatR;
+using ScientificPublications.Application.Common.Interfaces.Data;
+using ScientificPublications.Application.Common.Models.Mediatr;
+using ScientificPublications.Application.Features.Roles.Specifications;
 using ScientificPublications.Domain.Entities.Users;
+using ScientificPublications.Domain.Enums;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace ScientificPublications.Application.Features.Authors.Commands.CreateAuthor
 {
-    public class CreateAuthorCommandHandler : BaseRequestHandler<CreateAuthorCommand, AuthorDto>
+    public class CreateAuthorCommandHandler : BaseRequestHandler<CreateAuthorCommand, AuthorEntity>
     {
-        private readonly IAuthorService _authorService;
-        private readonly IUserService _userSerivce;
+        private readonly IMediator _mediator;
 
-        public CreateAuthorCommandHandler(IData data, IMapper mapper, IAuthorService authorService, IUserService userSerivce)
+        public CreateAuthorCommandHandler(IData data, IMapper mapper, IMediator mediator)
             : base(data, mapper)
         {
-            _authorService = authorService;
-            _userSerivce = userSerivce;
+            _mediator = mediator;
         }
 
-        public override async Task<AuthorDto> Handle(CreateAuthorCommand request, CancellationToken cancellationToken)
+        public override async Task<AuthorEntity> Handle(CreateAuthorCommand request, CancellationToken cancellationToken)
         {
-            var user = await _userSerivce.CreateUserAsync(request.RegisterUser);
+            var userEntity = await _mediator.Send(request.RegisterUser);
 
-            var author = await _authorService.CreateAuthorByUserAsync(request, user);
+            var author = _mapper.Map<AuthorEntity>(request);
 
-            await _data.SaveChangesAsync();
+            var role = (await _data.Roles.ListAsync(new GetRolesSpecification(Role.Author))).First();
 
-            return _mapper.Map<AuthorDto>(author);
+            userEntity.UserRoles.Add(new UserRoleEntity { Role = role });
 
+            author.User = userEntity;
+
+            await _data.Authors.AddAsync(author);
+
+            return author;
         }
 
     }

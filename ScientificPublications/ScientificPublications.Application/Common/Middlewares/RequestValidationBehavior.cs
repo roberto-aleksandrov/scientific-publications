@@ -1,15 +1,15 @@
-﻿using FluentValidation;
+using FluentValidation;
 using MediatR;
-using ScientificPublications.Application.Constants.Validators;
+using ScientificPublications.Application.Common.Constants.Validators;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ScientificPublications.Application.Middlewares
+namespace ScientificPublications.Application.Common.Middlewares
 {
     public class RequestValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
-      where TRequest : Common.Requests.IBaseRequest
+      where TRequest : Models.Mediatr.IBaseRequest
     {
         private readonly IEnumerable<IValidator<TRequest>> _validators;
 

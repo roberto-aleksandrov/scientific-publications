@@ -1,9 +1,9 @@
-﻿using ScientificPublications.Application.Common.Requests;
-using ScientificPublications.Application.Features.Users.Models;
+﻿using ScientificPublications.Application.Common.Models.Mediatr;
+using ScientificPublications.Domain.Entities.Users;
 
 namespace ScientificPublications.Application.Features.Users.Commands.RegisterUser
 {
-    public class RegisterUserCommand : BaseRequest<UserDto>
+    public class RegisterUserCommand : BaseCommand<UserEntity>
     {
         public string Username { get; set; }
 

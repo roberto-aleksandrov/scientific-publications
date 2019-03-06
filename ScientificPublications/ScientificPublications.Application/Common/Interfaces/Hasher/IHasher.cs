@@ -1,4 +1,4 @@
-﻿namespace ScientificPublications.Application.Interfaces.Hasher
+namespace ScientificPublications.Application.Common.Interfaces.Hasher
 {
     public interface IHasher
     {

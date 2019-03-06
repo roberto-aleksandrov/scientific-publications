@@ -1,4 +1,4 @@
-﻿using ScientificPublications.Infrastructure.Interfaces.PasswordGenerators;
+﻿using ScientificPublications.Infrastructure.PasswordGenerators.Interfaces;
 
 namespace ScientificPublications.WebUI.Models.Common
 {

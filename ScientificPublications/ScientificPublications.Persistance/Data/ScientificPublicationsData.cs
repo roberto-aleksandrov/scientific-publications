@@ -1,4 +1,4 @@
-﻿using ScientificPublications.Application.Interfaces.Data;
+﻿using ScientificPublications.Application.Common.Interfaces.Data;
 using ScientificPublications.Domain.Entities;
 using ScientificPublications.Domain.Entities.Publications;
 using ScientificPublications.Domain.Entities.Users;
@@ -33,9 +33,9 @@ namespace ScientificPublications.Infrastructure.Data
             Publications = publications;
             Roles = roles;
             UserRoles = userRoles;
-            
+
         }
-        
+
         public IAsyncRepository<UserEntity> Users { get; }
 
         public IAsyncRepository<AuthorEntity> Authors { get; }
@@ -50,7 +50,7 @@ namespace ScientificPublications.Infrastructure.Data
 
         public IAsyncRepository<UserRoleEntity> UserRoles { get; }
 
-        public IAsyncRepository<TEntity> Repository<TEntity>() 
+        public IAsyncRepository<TEntity> Repository<TEntity>()
             where TEntity : BaseEntity
         {
             var entityType = typeof(TEntity);

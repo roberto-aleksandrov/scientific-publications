@@ -1,9 +1,9 @@
-﻿using ScientificPublications.Application.Common.Models.Scopus;
+﻿using ScientificPublications.Application.Common.Models.Dtos;
 using ScientificPublications.Infrastructure.Converters;
 
 namespace ScientificPublications.Infrastructure.Scopus.Converters
 {
-    public class AuthorPublicationConverter : NameValueConverter<AuthorPublication>
+    public class AuthorPublicationConverter : NameValueConverter<ScopusAuthorPublicationDto>
     {
         public AuthorPublicationConverter()
         {

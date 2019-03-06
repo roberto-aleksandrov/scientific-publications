@@ -1,4 +1,4 @@
-﻿using ScientificPublications.Application.Common.ViewModels;
+﻿using ScientificPublications.Application.Common.Models.Dtos;
 
 namespace ScientificPublications.Application.Features.AuthorsAliases.Models
 {
@@ -7,6 +7,6 @@ namespace ScientificPublications.Application.Features.AuthorsAliases.Models
         public string Alias { get; set; }
 
         public int AuthorId { get; set; }
-        
+
     }
 }

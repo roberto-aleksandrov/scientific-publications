@@ -1,9 +1,9 @@
-﻿using ScientificPublications.Application.Common.Requests;
-using ScientificPublications.Application.Features.Users.Queries;
+﻿using ScientificPublications.Application.Common.Models.Mediatr;
+using ScientificPublications.Application.Features.Users.Queries.Login;
 
 namespace ScientificPublications.Application.Features.Users.Models
 {
-    public class LoginQuery : BaseRequest<LoginDto>
+    public class LoginQuery : BaseQuery<LoginDto>
     {
         public string Username { get; set; }
 

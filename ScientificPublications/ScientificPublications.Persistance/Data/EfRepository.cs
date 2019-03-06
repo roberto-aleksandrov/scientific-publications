@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ScientificPublications.Application.Interfaces.Data;
+using ScientificPublications.Application.Common.Interfaces.Data;
 using ScientificPublications.Domain.Entities;
 using System.Collections.Generic;
 using System.Linq;

@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using ScientificPublications.Application.Common.Requests;
+using ScientificPublications.Application.Common.Interfaces.Data;
+using ScientificPublications.Application.Common.Models.Mediatr;
+using ScientificPublications.Application.Common.Spcifications;
 using ScientificPublications.Application.Features.Publications.Models;
-using ScientificPublications.Application.Interfaces.Data;
-using ScientificPublications.Application.Spcifications;
 using ScientificPublications.Domain.Entities.Publications;
 using System.Collections.Generic;
 using System.Threading;

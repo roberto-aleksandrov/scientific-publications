@@ -1,13 +1,13 @@
-﻿using FluentValidation;
-using ScientificPublications.Application.Common.Requests;
-using ScientificPublications.Application.Interfaces.Data;
-using ScientificPublications.Application.Validators;
+using FluentValidation;
+using ScientificPublications.Application.Common.Interfaces.Data;
+using ScientificPublications.Application.Common.Models.Mediatr;
+using ScientificPublications.Application.Common.Validators;
 using ScientificPublications.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 
-namespace ScientificPublications.Application.Extensions
+namespace ScientificPublications.Application.Common.Extensions
 {
     public static class FluentValidationExtensions
     {

@@ -1,4 +1,6 @@
 ﻿using ScientificPublications.Integration.Tests.ControllersTests.UsersControllerTests.Contracts;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -7,16 +9,17 @@ namespace ScientificPublications.Integration.Tests.ControllersTests.UsersControl
     public class UsersControllerTests : ControllerTests
     {
         public UsersControllerTests() { }
-        //: base(factory) { }
 
         [Fact]
         public async Task Register()
         {
             var model = new RegisterUserRequest { Username = "test21312", Password = "blablabla" };
 
-            var response = await PostAsync<RegisterUserRequest, RegisterUserResponse>(model);
+            var response = await PostAsync<RegisterUserRequest, List<int>>(model);
 
-            Assert.Equal(model.Username, response.Username);
+            var user = _factory.Context.Users.Find(response.First());
+
+            Assert.Equal(model.Username, user.Username);
         }
 
     }

@@ -1,7 +1,9 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using ScientificPublications.Application.Common.Interfaces.Scopus;
-using ScientificPublications.Application.Common.Models.Scopus;
+using ScientificPublications.Application.Common.Models.Dtos;
+using ScientificPublications.Application.Common.Models.Requests;
+using ScientificPublications.Application.Common.Models.Responses;
 using ScientificPublications.Infrastructure.Scopus.Constants;
 using ScientificPublications.Infrastructure.Scopus.Converters;
 using ScientificPublications.Infrastructure.Scopus.Options;
@@ -27,7 +29,7 @@ namespace ScientificPublications.Infrastructure.Scopus
         public async Task<GetAuthorPublicationsResponse> GetAuthorPublications(GetAuthorPublicationsRequest getAuthorPublicationsRequest)
         {
             var authorDocuments = await GetAuthorDocuments(new GetAuthorDocumentsRequest { AuthorScopusId = getAuthorPublicationsRequest.AuthorScopusId });
-            var authorPublications = new List<AuthorPublication>();
+            var authorPublications = new List<ScopusAuthorPublicationDto>();
             var serializer = new JsonSerializer();
             serializer.Converters.Add(new AuthorPublicationConverter());
 
@@ -35,7 +37,7 @@ namespace ScientificPublications.Infrastructure.Scopus
             {
                 var response = await _client.GetAsync(ScopusUrls.GetAbstracts(document.DocumentScopusId));
                 var content = await response.Content.ReadAsStringAsync();
-                var authorPublication = JObject.Parse(content).ToObject<AuthorPublication>(serializer);
+                var authorPublication = JObject.Parse(content).ToObject<ScopusAuthorPublicationDto>(serializer);
 
                 authorPublication.ScopusId = document.DocumentScopusId;
 

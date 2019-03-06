@@ -1,7 +1,5 @@
-﻿using ScientificPublications.Application.Common.Models.Scopus;
-using ScientificPublications.Infrastructure.ContractResolvers;
+﻿using ScientificPublications.Application.Common.Models.Responses;
 using ScientificPublications.Infrastructure.Converters;
-using ScientificPublications.Infrastructure.Scopus.Converters;
 
 namespace ScientificPublications.Infrastructure.Scopus.Converters
 {

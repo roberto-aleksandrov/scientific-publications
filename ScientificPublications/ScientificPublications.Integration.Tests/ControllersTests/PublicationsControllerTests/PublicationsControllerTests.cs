@@ -1,6 +1,6 @@
-﻿using ScientificPublications.Application.Constants.Validators;
+﻿using Microsoft.EntityFrameworkCore;
+using ScientificPublications.Application.Common.Constants.Validators;
 using ScientificPublications.Domain.Entities.Publications;
-using ScientificPublications.Infrastructure;
 using ScientificPublications.Integration.Tests.ControllersTests.PublicationsControllerTests.Contracts;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,11 +18,15 @@ namespace ScientificPublications.Integration.Tests.ControllersTests.Publications
             request.AuthorIds = _factory.Context.Authors.Select(n => n.Id).ToList();
 
             await Authenticate();
-            var response = await PostAsync<CreatePublicationRequest, CreatePublicationResponse>(request);
+            var response = await PostAsync<CreatePublicationRequest, List<int>>(request);
 
-            Assert.Equal(request.Text, response.Text);
-            Assert.Equal(request.Title, response.Title);
-            Assert.Equal(string.Join("", request.AuthorIds), string.Join("", response.AuthorsPublications.Select(n => n.AuthorId)));
+            var publication = _factory.Context.Publications
+                .Include(n => n.AuthorsPublications)
+                .First(n => n.Id == response.First());
+
+            Assert.Equal(request.Text, publication.Text);
+            Assert.Equal(request.Title, publication.Title);
+            Assert.Equal(string.Join("", request.AuthorIds), string.Join("", publication.AuthorsPublications.Select(n => n.AuthorId)));
         }
 
         [Fact]
@@ -61,7 +65,7 @@ namespace ScientificPublications.Integration.Tests.ControllersTests.Publications
             createPublicationRequest.AuthorIds = new List<int>() { 1, 2 };
 
             await Authenticate();
-            await PostAsync<CreatePublicationRequest, CreatePublicationResponse>(createPublicationRequest);
+            await PostAsync<CreatePublicationRequest, List<int>>(createPublicationRequest);
             var response = await GetAsync<GetAllPublicationsRequest, IEnumerable<CreatePublicationResponse>>(getAllPublicationsRequest);
 
             response.ToList().ForEach(publication =>

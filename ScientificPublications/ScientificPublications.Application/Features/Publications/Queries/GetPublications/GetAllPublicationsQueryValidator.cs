@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
-using ScientificPublications.Application.Attributes;
-using ScientificPublications.Application.Extensions;
+using ScientificPublications.Application.Common.Attributes;
 using ScientificPublications.Domain.Entities.Publications;
+using ScientificPublications.Application.Common.Extensions;
 
 namespace ScientificPublications.Application.Features.Publications.Queries.GetPublications
 {

@@ -1,7 +1,7 @@
-﻿using FluentValidation.Validators;
-using ScientificPublications.Application.Constants.Validators;
-using ScientificPublications.Application.Interfaces.Data;
-using ScientificPublications.Application.Spcifications;
+using FluentValidation.Validators;
+using ScientificPublications.Application.Common.Constants.Validators;
+using ScientificPublications.Application.Common.Interfaces.Data;
+using ScientificPublications.Application.Common.Spcifications;
 using ScientificPublications.Domain.Entities;
 using System;
 using System.Linq;
@@ -9,7 +9,7 @@ using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ScientificPublications.Application.Validators
+namespace ScientificPublications.Application.Common.Validators
 {
     public class NoneAsyncValidator<TProperty, TEntity> : AsyncValidator
           where TEntity : BaseEntity

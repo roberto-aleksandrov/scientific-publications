@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using ScientificPublications.Application.Common.Models.Scopus;
+using ScientificPublications.Application.Common.Models.Requests;
 using ScientificPublications.Infrastructure;
 using ScientificPublications.Infrastructure.Scopus;
 using ScientificPublications.Persistance;
@@ -15,7 +15,7 @@ namespace ScientificPublications.WebUI
     {
         public static void Main(string[] args)
         {
-            testc();
+            //testc();
             var host = CreateWebHostBuilder(args).Build();
             using (var scope = host.Services.CreateScope())
             {

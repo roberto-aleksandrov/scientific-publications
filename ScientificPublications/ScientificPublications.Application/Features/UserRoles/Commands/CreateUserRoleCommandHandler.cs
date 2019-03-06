@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using ScientificPublications.Application.Common.Requests;
-using ScientificPublications.Application.Interfaces.Data;
+using ScientificPublications.Application.Common.Interfaces.Data;
+using ScientificPublications.Application.Common.Models.Mediatr;
 using ScientificPublications.Domain.Entities.Users;
 using System.Threading;
 using System.Threading.Tasks;

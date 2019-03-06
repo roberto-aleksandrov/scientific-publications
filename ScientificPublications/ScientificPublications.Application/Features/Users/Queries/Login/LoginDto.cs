@@ -1,4 +1,4 @@
-﻿namespace ScientificPublications.Application.Features.Users.Queries
+namespace ScientificPublications.Application.Features.Users.Queries.Login
 {
     public class LoginDto
     {

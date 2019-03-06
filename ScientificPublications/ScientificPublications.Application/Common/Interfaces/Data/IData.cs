@@ -1,9 +1,9 @@
-﻿using ScientificPublications.Domain.Entities;
+using ScientificPublications.Domain.Entities;
 using ScientificPublications.Domain.Entities.Publications;
 using ScientificPublications.Domain.Entities.Users;
 using System.Threading.Tasks;
 
-namespace ScientificPublications.Application.Interfaces.Data
+namespace ScientificPublications.Application.Common.Interfaces.Data
 {
     public interface IData
     {

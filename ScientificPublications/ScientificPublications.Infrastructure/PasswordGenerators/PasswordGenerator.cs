@@ -1,7 +1,6 @@
 ﻿using Caelan.Frameworks.PasswordEncryption.Classes;
-using ScientificPublications.Application.Interfaces.Hasher;
-using ScientificPublications.Infrastructure.Interfaces.PasswordGenerators;
-using System;
+using ScientificPublications.Application.Common.Interfaces.Hasher;
+using ScientificPublications.Infrastructure.PasswordGenerators.Interfaces;
 
 namespace ScientificPublications.Infrastructure.PasswordGenerators
 {

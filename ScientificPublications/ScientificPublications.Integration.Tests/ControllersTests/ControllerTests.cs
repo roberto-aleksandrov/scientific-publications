@@ -116,7 +116,6 @@ namespace ScientificPublications.Integration.Tests.ControllersTests
 
         public async Task<TResponse> PostAsync<TRequest, TResponse>(TRequest request)
             where TRequest : Request
-            where TResponse : Response
         {
             return await CreateResponse<TResponse>(await _client.PostAsync(CreateUri(request), CreateContent(request)));
         }

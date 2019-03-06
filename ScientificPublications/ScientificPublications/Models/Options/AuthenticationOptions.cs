@@ -1,4 +1,4 @@
-﻿using ScientificPublications.Application.Interfaces.Authentication;
+﻿using ScientificPublications.Application.Common.Interfaces.Authentication;
 
 namespace ScientificPublications.WebUI.Models.Options
 {

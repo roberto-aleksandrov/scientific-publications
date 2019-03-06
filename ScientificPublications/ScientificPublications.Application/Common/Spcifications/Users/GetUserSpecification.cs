@@ -1,8 +1,8 @@
-﻿using ScientificPublications.Domain.Entities.Users;
+using ScientificPublications.Domain.Entities.Users;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ScientificPublications.Application.Spcifications.Users
+namespace ScientificPublications.Application.Common.Spcifications.Users
 {
     public class GetUserSpecification : BaseSpecification<UserEntity>
     {

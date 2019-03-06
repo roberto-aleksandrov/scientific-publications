@@ -1,13 +1,13 @@
-﻿using FluentValidation.Validators;
-using ScientificPublications.Application.Constants.Validators;
-using ScientificPublications.Application.Interfaces.Data;
+using FluentValidation.Validators;
+using ScientificPublications.Application.Common.Constants.Validators;
+using ScientificPublications.Application.Common.Interfaces.Data;
 using ScientificPublications.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ScientificPublications.Application.Validators
+namespace ScientificPublications.Application.Common.Validators
 {
     public class IsTrueAsyncValidator<TProperty, TEntity> : AsyncValidator
           where TEntity : BaseEntity

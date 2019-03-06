@@ -1,9 +1,9 @@
-﻿using AutoMapper;
-using ScientificPublications.Application.AutoMapper.Converters;
-using ScientificPublications.Application.Common.Requests;
-using ScientificPublications.Application.Spcifications;
+using AutoMapper;
+using ScientificPublications.Application.Common.AutoMapper.Converters;
+using ScientificPublications.Application.Common.Models.Mediatr;
+using ScientificPublications.Application.Common.Spcifications;
 
-namespace ScientificPublications.Application.AutoMapper
+namespace ScientificPublications.Application.Common.AutoMapper
 {
     public class QueryToSpecProfile : Profile
     {

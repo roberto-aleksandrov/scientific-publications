@@ -2,7 +2,7 @@
 {
     using Microsoft.IdentityModel.Tokens;
     using Newtonsoft.Json;
-    using ScientificPublications.Application.Interfaces.Authentication;
+    using ScientificPublications.Application.Common.Interfaces.Authentication;
     using System;
     using System.Collections.Generic;
     using System.IdentityModel.Tokens.Jwt;

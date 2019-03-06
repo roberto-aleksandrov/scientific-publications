@@ -1,10 +1,10 @@
-﻿using FluentValidation.Results;
-using ScientificPublications.Application.Constants.Validators;
+using FluentValidation.Results;
+using ScientificPublications.Application.Common.Constants.Validators;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ScientificPublications.Application.Exceptions
+namespace ScientificPublications.Application.Common.Exceptions
 {
     public class ValidationException : Exception
     {
@@ -45,6 +45,6 @@ namespace ScientificPublications.Application.Exceptions
 
         public IDictionary<string, string[]> Failures { get; }
 
-        public ErrorTypes ErrorType{ get; }
+        public ErrorTypes ErrorType { get; }
     }
 }

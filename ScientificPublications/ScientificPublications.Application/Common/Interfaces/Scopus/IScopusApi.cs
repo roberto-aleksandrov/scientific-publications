@@ -1,4 +1,5 @@
-﻿using ScientificPublications.Application.Common.Models.Scopus;
+﻿using ScientificPublications.Application.Common.Models.Requests;
+using ScientificPublications.Application.Common.Models.Responses;
 using System.Threading.Tasks;
 
 namespace ScientificPublications.Application.Common.Interfaces.Scopus

@@ -1,5 +1,4 @@
-﻿using ScientificPublications.Application.Common.Requests;
-using ScientificPublications.Domain.Enums;
+﻿using ScientificPublications.Application.Common.Models.Mediatr;
 
 namespace ScientificPublications.Application.Features.UserRoles.Commands
 {

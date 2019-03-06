@@ -1,10 +1,9 @@
-﻿using AutoMapper;
-using MediatR;
-using ScientificPublications.Application.Common.Requests;
+using AutoMapper;
+using ScientificPublications.Application.Common.Interfaces.Authentication;
+using ScientificPublications.Application.Common.Interfaces.Data;
+using ScientificPublications.Application.Common.Models.Mediatr;
+using ScientificPublications.Application.Common.Spcifications.Users;
 using ScientificPublications.Application.Features.Users.Models;
-using ScientificPublications.Application.Interfaces.Authentication;
-using ScientificPublications.Application.Interfaces.Data;
-using ScientificPublications.Application.Spcifications.Users;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -13,7 +12,7 @@ using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ScientificPublications.Application.Features.Users.Queries
+namespace ScientificPublications.Application.Features.Users.Queries.Login
 {
     public class LoginQueryHandler : BaseRequestHandler<LoginQuery, LoginDto>
     {
