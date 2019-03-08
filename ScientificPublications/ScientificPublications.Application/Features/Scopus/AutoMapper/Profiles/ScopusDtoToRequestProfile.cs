@@ -4,9 +4,9 @@ using ScientificPublications.Application.Features.Publications.Commands.CreatePu
 
 namespace ScientificPublications.Application.Features.Scopus.AutoMapper.Profiles
 {
-    public class ScopusDtoToCommandProfile : Profile
+    public class ScopusDtoToRequestProfile : Profile
     {
-        public ScopusDtoToCommandProfile()
+        public ScopusDtoToRequestProfile()
         {
             CreateMap<ScopusAuthorPublicationDto, CreatePublicationCommand>();
         }

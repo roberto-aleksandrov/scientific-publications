@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Extensions;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using ScientificPublications.Application.Common.Interfaces.Scopus;
 using ScientificPublications.Application.Common.Models.Dtos;
@@ -8,7 +9,7 @@ using ScientificPublications.Infrastructure.Scopus.Constants;
 using ScientificPublications.Infrastructure.Scopus.Converters;
 using ScientificPublications.Infrastructure.Scopus.Options;
 using System;
-using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -29,11 +30,11 @@ namespace ScientificPublications.Infrastructure.Scopus
         public async Task<GetAuthorPublicationsResponse> GetAuthorPublications(GetAuthorPublicationsRequest getAuthorPublicationsRequest)
         {
             var authorDocuments = await GetAuthorDocuments(new GetAuthorDocumentsRequest { AuthorScopusId = getAuthorPublicationsRequest.AuthorScopusId });
-            var authorPublications = new List<ScopusAuthorPublicationDto>();
             var serializer = new JsonSerializer();
+
             serializer.Converters.Add(new AuthorPublicationConverter());
 
-            foreach (var document in authorDocuments.Documents)
+            var authorPublications = await authorDocuments.Documents.ParallelSelectAsync(async document =>
             {
                 var response = await _client.GetAsync(ScopusUrls.GetAbstracts(document.DocumentScopusId));
                 var content = await response.Content.ReadAsStringAsync();
@@ -41,10 +42,10 @@ namespace ScientificPublications.Infrastructure.Scopus
 
                 authorPublication.ScopusId = document.DocumentScopusId;
 
-                authorPublications.Add(authorPublication);
-            }
+                return authorPublication;
+            });
 
-            return new GetAuthorPublicationsResponse { AuthorPublications = authorPublications };
+            return new GetAuthorPublicationsResponse { AuthorPublications = authorPublications.ToList() };
         }
 
         public async Task<GetAuthorDocumentsResponse> GetAuthorDocuments(GetAuthorDocumentsRequest getAuthorDocumentsRequest)

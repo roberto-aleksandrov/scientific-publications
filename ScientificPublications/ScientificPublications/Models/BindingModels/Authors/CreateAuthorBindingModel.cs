@@ -1,13 +1,9 @@
-﻿using ScientificPublications.WebUI.Models.BindingModels.AuthorsAliases;
-using ScientificPublications.WebUI.Models.BindingModels.User;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace ScientificPublications.WebUI.Models.BindingModels.Authors
 {
-    public class CreateAuthorBindingModel : BindingModel
+    public class CreateAuthorBindingModel
     {
-        public RegisterUserBindingModel RegisterUser { get; set; }
-
         public bool IsCathedralMember { get; set; }
 
         public string ScopusId { get; set; }

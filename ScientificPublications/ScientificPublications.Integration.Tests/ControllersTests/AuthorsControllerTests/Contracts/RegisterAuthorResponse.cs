@@ -7,7 +7,7 @@ using System.Collections.Generic;
 namespace ScientificPublications.Integration.Tests.ControllersTests.Authors.Contracts
 {
     [Endpoint("Create")]
-    public class CreateAuthorResponse : Response
+    public class RegisterAuthorResponse : Response
     {
         public string ScopusId { get; set; }
 

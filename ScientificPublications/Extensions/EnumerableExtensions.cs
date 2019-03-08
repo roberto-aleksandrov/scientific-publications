@@ -31,5 +31,10 @@ namespace Extensions
 
             return result;
         }
+
+        public static async Task<IEnumerable<TOut>> ParallelSelectAsync<TIn, TOut>(this IEnumerable<TIn> enumerable, Func<TIn, Task<TOut>> action)
+        {
+            return await Task.WhenAll(enumerable.Select(item => action(item)));
+        }
     }
 }

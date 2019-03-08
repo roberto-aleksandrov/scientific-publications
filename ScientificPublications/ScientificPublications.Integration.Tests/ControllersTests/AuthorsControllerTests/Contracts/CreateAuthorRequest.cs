@@ -1,15 +1,9 @@
-﻿using ScientificPublications.Integration.Tests.Attributes;
-using ScientificPublications.Integration.Tests.Contracts;
-using ScientificPublications.Integration.Tests.ControllersTests.UsersControllerTests.Contracts;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace ScientificPublications.Integration.Tests.ControllersTests.Authors.Contracts
+namespace ScientificPublications.Integration.Tests.ControllersTests.AuthorsControllerTests.Contracts
 {
-    [Endpoint("Create")]
-    public class CreateAuthorRequest : Request
+    public class CreateAuthorRequest
     {
-        public RegisterUserRequest RegisterUser { get; set; }
-
         public bool IsCathedralMember { get; set; }
 
         public string ScopusId { get; set; }
