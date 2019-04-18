@@ -1,15 +1,16 @@
-﻿using System;
+﻿using System.Collections.Generic;
+using System.Net;
 
 namespace ScientificPublications.Integration.Tests.Contracts
 {
-    public class Response
+    public class Response<T>
     {
-        public int Id { get; set; }
+        public HttpStatusCode StatusCode { get; set; }
 
-        public DateTime CreationDate { get; set; }
+        public string StringContent { get; set; }
 
-        public DateTime UpdateDate { get; set; }
+        public T Content { get; set; }
 
-        public Type InstanceType { get; set; }
+        public Dictionary<string, string[]> ErrorMessages { get; set; }
     }
 }

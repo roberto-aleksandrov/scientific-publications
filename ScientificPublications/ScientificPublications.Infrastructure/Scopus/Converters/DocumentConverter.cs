@@ -7,8 +7,12 @@ namespace ScientificPublications.Infrastructure.Scopus.Converters
     {
         public DocumentConverter()
         {
-            AddMap(n => n.DocumentScopusId, "dc:identifier", n => n.Replace("SCOPUS_ID:", ""));
-            AddMap(n => n.Url, "prism:url");
+            CreateaMappings(builder =>
+            {
+                builder
+                    .AddMap(n => n.DocumentScopusId, "dc:identifier", n => n.Replace("SCOPUS_ID:", ""))
+                    .AddMap(n => n.Url, "prism:url");
+            });
         }
     }
 }

@@ -17,7 +17,7 @@ namespace ScientificPublications.Integration.Tests.ControllersTests.UsersControl
 
             var response = await PostAsync<RegisterUserRequest, List<int>>(model);
 
-            var user = _factory.Context.Users.Find(response.First());
+            var user = _factory.Context.Users.Find(response.Content.First());
 
             Assert.Equal(model.Username, user.Username);
         }

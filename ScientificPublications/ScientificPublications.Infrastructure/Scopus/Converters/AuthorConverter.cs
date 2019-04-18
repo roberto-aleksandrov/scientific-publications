@@ -7,8 +7,12 @@ namespace ScientificPublications.Infrastructure.Scopus.Converters
     {
         public AuthorConverter()
         {
-            AddMap(n => n.Name, "ce:indexed-name");
-            AddMap(n => n.ScopusId, "@auid");
+            CreateaMappings(builder =>
+            {
+                builder
+                    .AddMap(n => n.Name, "ce:indexed-name")
+                    .AddMap(n => n.ScopusId, "@auid");
+            });
         }
     }
 }

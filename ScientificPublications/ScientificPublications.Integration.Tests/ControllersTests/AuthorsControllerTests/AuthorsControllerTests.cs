@@ -6,6 +6,7 @@ using ScientificPublications.Integration.Tests.Seed;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -26,8 +27,9 @@ namespace ScientificPublications.Integration.Tests.ControllersTests.Authors
             var author = _factory.Context.Authors
                 .Include(n => n.User)
                 .Include(n => n.Aliases)
-                .First(n => n.Id == response.First());
+                .First(n => n.Id == response.Content.First());
 
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
             Assert.Equal(request.RegisterUser.Username, author.User.Username);
             Assert.Equal(request.CreateAuthor.ScopusId, author.ScopusId);
             Assert.Equal(authorType, author.InstanceType);
@@ -37,23 +39,27 @@ namespace ScientificPublications.Integration.Tests.ControllersTests.Authors
         [Fact]
         public async Task CreateAuthor_UsernameExists_Test()
         {
+            var user = _factory.Seeder.Seed<UserEntity>();
             var request = TestData.CreateAuthorRequest;
-            request.RegisterUser.Username = "test";
+            request.RegisterUser.Username = user.Username;
 
-            await PostAsync<RegisterAuthorRequest, RegisterAuthorResponse>(request);
+            var response = await PostAsync<RegisterAuthorRequest, List<int>>(request);
 
-            Assert.Equal(nameof(request.RegisterUser.Username), _errorMessages?.FirstOrDefault().Key);
+            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+            Assert.Equal(nameof(request.RegisterUser.Username), response.ErrorMessages?.FirstOrDefault().Key);
         }
 
         [Fact]
         public async Task CreateAuthor_ScopusIdExists_Test()
         {
+            var author = _factory.Seeder.Seed<AuthorEntity>();
             var request = TestData.CreateAuthorRequest;
-            request.CreateAuthor.ScopusId = SeedData.Authors[0].ScopusId;
+            request.CreateAuthor.ScopusId = author.ScopusId;
 
-            await PostAsync<RegisterAuthorRequest, RegisterAuthorResponse>(request);
+            var response = await PostAsync<RegisterAuthorRequest, List<int>>(request);
 
-            Assert.Equal(nameof(request.CreateAuthor.ScopusId), _errorMessages?.FirstOrDefault().Key);
+            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+            Assert.Equal(nameof(request.CreateAuthor.ScopusId), response.ErrorMessages?.FirstOrDefault().Key);
         }
     }
 }

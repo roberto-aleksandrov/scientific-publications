@@ -7,7 +7,11 @@ namespace ScientificPublications.Infrastructure.Scopus.Converters
     {
         public GetAuthorDocumentsContractResolver()
         {
-            AddMap(n => n.Documents, "search-results.entry", new DocumentConverter());
+            CreateaMappings(builder =>
+            {
+                builder
+                    .AddMap(n => n.Documents, "search-results.entry", new DocumentConverter());
+            });
         }
     }
 }

@@ -1,80 +1,28 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using ScientificPublications.Infrastructure.Converters.MappingBuilders;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 
 namespace ScientificPublications.Infrastructure.Converters
 {
 
-    public abstract class BaseMap
-    {
-        public abstract object Exec(object mappable);
-
-    }
-
-    public class Map<TProperty> : BaseMap
-    {
-        private readonly Func<TProperty, object> _map;
-
-        public Map(Func<TProperty, object> map)
-        {
-            _map = map;
-        }
-        
-        public override object Exec(object mappable)
-        {
-            return _map((TProperty)mappable);
-        }
-    }
-
-    public class MapConfig
-    {
-        public List<string> Path { get; set; }
-
-        public JsonConverter Converter { get; set; }
-
-        public BaseMap Map { get; set; }
-    }
-
     public class NameValueConverter<TConvertible> : JsonConverter
     {
-        protected readonly Dictionary<string, MapConfig> _propertyMappings;
+        private readonly MappingsBuilder<TConvertible> _mappingsBuilder;
+        private Mappings _mappings;
 
         public NameValueConverter()
         {
-            _propertyMappings = new Dictionary<string, MapConfig>();
+            _mappingsBuilder = new MappingsBuilder<TConvertible>();
         }
 
-        protected void AddMap<TProperty>(Expression<Func<TConvertible, TProperty>> expression, string jsonPropertyName, Func<TProperty, object> map = null)
+        protected void CreateaMappings(Action<MappingsBuilder<TConvertible>> func)
         {
-            if (!(expression.Body is MemberExpression memberExpression))
-            {
-                return;
-            }
-
-            var mapConfig =  new MapConfig { Path = jsonPropertyName.Split('.').ToList()};
-
-            if (map != null)
-            {
-                mapConfig.Map = new Map<TProperty>(map);
-            }
-
-            _propertyMappings.Add(memberExpression.Member.Name, mapConfig);
-        }
-
-        protected void AddMap<TProperty, TInnerConvertible>(Expression<Func<TConvertible, TProperty>> expression, string jsonPropertyName, NameValueConverter<TInnerConvertible> converter)
-        {
-            if (!(expression.Body is MemberExpression memberExpression))
-            {
-                return;
-            }
-
-            var mapConfig = new MapConfig { Path = jsonPropertyName.Split('.').ToList(), Converter = converter };
-
-            _propertyMappings.Add(memberExpression.Member.Name, mapConfig);
+            func(_mappingsBuilder);
+            _mappings = _mappingsBuilder.Build();
         }
 
         public override bool CanConvert(Type objectType)
@@ -116,7 +64,7 @@ namespace ScientificPublications.Infrastructure.Converters
 
             foreach (var property in properties)
             {
-                var mapConfig = _propertyMappings[property.Name];
+                var mapConfig = _mappings.GetMapping(property.Name);
 
                 var targetValue = GetTargetValue(mapConfig.Path.ToList(), jobj);
 
@@ -124,12 +72,12 @@ namespace ScientificPublications.Infrastructure.Converters
                 {
                     continue;
                 }
-
+                
                 var targetObject = mapConfig.Converter != null
                     ? mapConfig.Converter.ReadJson(targetValue.CreateReader(), property.PropertyType, null, null)
-                    : targetValue.ToObject(property.PropertyType);
+                    : (mapConfig.BeforeMap?.Exec(targetValue) as JToken)?.ToObject(property.PropertyType) ?? targetValue.ToObject(property.PropertyType);
 
-                targetObject = mapConfig.Map?.Exec(targetObject) ?? targetObject;
+                targetObject = mapConfig.AfterMap?.Exec(targetObject) ?? targetObject;
 
                 property.SetValue(obj, targetObject);
             }
@@ -141,7 +89,7 @@ namespace ScientificPublications.Infrastructure.Converters
         {
             JToken targetValue;
             var next = path.FirstOrDefault();
-            
+
             if (next == null)
             {
                 return jobj;

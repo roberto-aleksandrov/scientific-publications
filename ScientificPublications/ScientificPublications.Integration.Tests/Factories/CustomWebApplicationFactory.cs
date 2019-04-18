@@ -5,10 +5,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using ScientificPublications.Application.Common.Interfaces.Hasher;
+using ScientificPublications.Domain.Entities.Users;
 using ScientificPublications.Infrastructure;
 using ScientificPublications.Infrastructure.PasswordGenerators;
 using ScientificPublications.Infrastructure.PasswordGenerators.Interfaces;
 using ScientificPublications.Integration.Tests.Seed;
+using ScientificPublications.Integration.Tests.Seed.Hooks;
 using ScientificPublications.WebUI.Models.Common;
 using System;
 
@@ -16,12 +18,16 @@ namespace ScientificPublications.Integration.Tests.Factories
 {
     public class CustomWebApplicationFactory<TStartup> : WebApplicationFactory<TStartup> where TStartup : class
     {
+        private IServiceScope _serviceScope;
+
         public ScientificPublicationsContext Context { get; private set; }
+
+        public ScientificPublicationsSeeder Seeder { get; private set; }
 
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);
-            Context?.Dispose();
+            _serviceScope.Dispose();
         }
 
         protected override void ConfigureWebHost(IWebHostBuilder builder)
@@ -43,29 +49,31 @@ namespace ScientificPublications.Integration.Tests.Factories
                 });
 
                 services.AddTransient<IHasher, PasswordGenerator>();
-
                 services.AddSingleton<IPasswordGeneratorOptions>(configuration.GetSection("Auth").Get<PasswordGeneratorOptions>());
+                services.AddSingleton<ScientificPublicationsSeeder>();
+                services.AddSingleton<IPreSeedHook<UserEntity>, UserHook>();
+                services.AddSingleton<PreSeedHooks>();
 
-                Context = services.BuildServiceProvider().GetRequiredService<ScientificPublicationsContext>();
+                _serviceScope = services.BuildServiceProvider().CreateScope();
+                var scopedServices = _serviceScope.ServiceProvider;
 
-                using (var scope = services.BuildServiceProvider().CreateScope())
+                var logger = scopedServices.GetRequiredService<ILogger<CustomWebApplicationFactory<TStartup>>>();
+
+                Context = scopedServices.GetRequiredService<ScientificPublicationsContext>();
+                Seeder = scopedServices.GetRequiredService<ScientificPublicationsSeeder>();
+
+                Context.Database.EnsureCreated();
+
+                try
                 {
-                    var scopedServices = scope.ServiceProvider;
-                    var hasher = scopedServices.GetRequiredService<IHasher>();
-                    var logger = scopedServices
-                        .GetRequiredService<ILogger<CustomWebApplicationFactory<TStartup>>>();
-
-                    Context.Database.EnsureCreated();
-
-                    try
-                    {
-                        ScientificPublicationsSeedTest.Seed(Context, hasher);
-                    }
-                    catch (Exception ex)
-                    {
-                        logger.LogError(ex, $"An error occurred seeding the database with test messages. Error: {ex.Message}");
-                    }
+                    ScientificPublicationsSeedTest.Seed(Context);
                 }
+                catch (Exception ex)
+                {
+                    logger.LogError(ex, $"An error occurred seeding the database with test messages. Error: {ex.Message}");
+                }
+
+
                 var authors = Context.Authors.ToListAsync().Result;
             });
         }

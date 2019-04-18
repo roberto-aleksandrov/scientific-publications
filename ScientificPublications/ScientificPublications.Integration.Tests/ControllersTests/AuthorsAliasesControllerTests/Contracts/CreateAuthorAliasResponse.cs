@@ -2,7 +2,7 @@
 
 namespace ScientificPublications.Integration.Tests.ControllersTests.AuthorsAliasesControllerTests.Contracts
 {
-    public class CreateAuthorAliasResponse : Response
+    public class CreateAuthorAliasResponse : ResponseContent
     {
         public string Alias { get; set; }
 

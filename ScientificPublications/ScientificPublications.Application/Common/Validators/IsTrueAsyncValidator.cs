@@ -26,7 +26,7 @@ namespace ScientificPublications.Application.Common.Validators
             _spec = spec;
             _criteria = criteria;
         }
-
+        
         protected override async Task<bool> IsValidAsync(PropertyValidatorContext context, CancellationToken cancellation)
         {
             var prop = (TProperty)context.PropertyValue;

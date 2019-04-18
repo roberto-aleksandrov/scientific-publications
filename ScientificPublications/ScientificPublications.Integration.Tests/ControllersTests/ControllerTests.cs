@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.Routing;
 using Newtonsoft.Json;
+using ScientificPublications.Domain.Entities.Users;
 using ScientificPublications.Integration.Tests.Attributes;
 using ScientificPublications.Integration.Tests.Contracts;
 using ScientificPublications.Integration.Tests.Factories;
@@ -23,36 +24,36 @@ namespace ScientificPublications.Integration.Tests.ControllersTests
         private readonly HttpClient _client;
         protected readonly CustomWebApplicationFactory<Startup> _factory;
 
-        protected HttpStatusCode _statusCode;
-        protected string _content;
-        protected Dictionary<string, string[]> _errorMessages;
-
         public ControllerTests()
         {
             _factory = new CustomWebApplicationFactory<Startup>();
             _client = _factory.CreateClient();
         }
 
-        protected virtual async Task<TResponse> CreateResponse<TResponse>(HttpResponseMessage responseMessage)
+        protected virtual async Task<Response<TContent>> CreateResponse<TContent>(HttpResponseMessage responseMessage)
         {
-            _statusCode = responseMessage.StatusCode;
-            _content = await responseMessage.Content.ReadAsStringAsync();
+            var response = new Response<TContent>()
+            {
+                StatusCode = responseMessage.StatusCode,
+                StringContent = await responseMessage.Content.ReadAsStringAsync()
+            };
 
             if (!responseMessage.IsSuccessStatusCode)
             {
                 try
                 {
-                    _errorMessages = JsonConvert.DeserializeObject<Dictionary<string, string[]>>(_content);
+                    response.ErrorMessages = JsonConvert.DeserializeObject<Dictionary<string, string[]>>(response.StringContent);
+                    return response;
                 }
                 catch
                 {
-                    throw new Exception($"StatusCode: ${_statusCode}\nError: ${_content}");
+                    throw new Exception($"StatusCode: ${response.StatusCode}\nError: ${response.StringContent}");
                 }
-
-                return default(TResponse);
             }
 
-            return JsonConvert.DeserializeObject<TResponse>(await responseMessage.Content.ReadAsStringAsync());
+            response.Content = JsonConvert.DeserializeObject<TContent>(await responseMessage.Content.ReadAsStringAsync());
+
+            return response;
         }
 
         protected virtual HttpContent CreateContent<TRequest>(TRequest request)
@@ -96,40 +97,39 @@ namespace ScientificPublications.Integration.Tests.ControllersTests
 
         protected virtual async Task Authenticate()
         {
+            var user = _factory.Seeder.Seed<UserEntity>();
+
             var loginRequest = new LoginRequest
             {
-                Username = SeedData.Users[0].Username,
-                Password = SeedData.Users[0].Password,
+                Username = user.Username,
+                Password = "Test12345"
             };
 
             var loginResponse = await PostAsync<LoginRequest, LoginResponse>(loginRequest);
 
-            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", loginResponse.Token);
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", loginResponse.Content.Token);
         }
 
-        public async Task<TResponse> GetAsync<TRequest, TResponse>(TRequest request)
-            where TRequest : Request
-            where TResponse : class
-        {
-            return await CreateResponse<TResponse>(await _client.GetAsync(CreateUri(request)));
-        }
-
-        public async Task<TResponse> PostAsync<TRequest, TResponse>(TRequest request)
+        public async Task<Response<TContent>> GetAsync<TRequest, TContent>(TRequest request)
             where TRequest : Request
         {
-            return await CreateResponse<TResponse>(await _client.PostAsync(CreateUri(request), CreateContent(request)));
+            return await CreateResponse<TContent>(await _client.GetAsync(CreateUri(request)));
         }
 
-        public async Task<TResponse> PutAsync<TRequest, TResponse>(TRequest request)
+        public async Task<Response<TContent>> PostAsync<TRequest, TContent>(TRequest request)
             where TRequest : Request
-            where TResponse : Response
         {
-            return await CreateResponse<TResponse>(await _client.PutAsync(CreateUri(request), CreateContent(request)));
+            return await CreateResponse<TContent>(await _client.PostAsync(CreateUri(request), CreateContent(request)));
         }
 
-        public async Task<TResponse> DeleteAsync<TRequest, TResponse>(TRequest request)
+        public async Task<Response<TContent>> PutAsync<TRequest, TContent>(TRequest request)
             where TRequest : Request
-            where TResponse : Response
+        {
+            return await CreateResponse<TContent>(await _client.PutAsync(CreateUri(request), CreateContent(request)));
+        }
+
+        public async Task<Response<TContent>> DeleteAsync<TRequest, TContent>(TRequest request)
+            where TRequest : Request
         {
             var requestMessage = new HttpRequestMessage
             {
@@ -138,7 +138,7 @@ namespace ScientificPublications.Integration.Tests.ControllersTests
                 Method = HttpMethod.Delete,
             };
 
-            return await CreateResponse<TResponse>(await _client.SendAsync(requestMessage));
+            return await CreateResponse<TContent>(await _client.SendAsync(requestMessage));
         }
     }
 }

@@ -1,4 +1,5 @@
 using ScientificPublications.Domain.Entities;
+using ScientificPublications.Domain.Entities.Affiliations;
 using ScientificPublications.Domain.Entities.Publications;
 using ScientificPublications.Domain.Entities.Users;
 using System.Threading.Tasks;
@@ -20,6 +21,8 @@ namespace ScientificPublications.Application.Common.Interfaces.Data
         IAsyncRepository<RoleEntity> Roles { get; }
 
         IAsyncRepository<UserRoleEntity> UserRoles { get; }
+
+        IAsyncRepository<AffiliationEntity> Affiliations { get; }
 
         IAsyncRepository<TEntity> Repository<TEntity>()
             where TEntity : BaseEntity;

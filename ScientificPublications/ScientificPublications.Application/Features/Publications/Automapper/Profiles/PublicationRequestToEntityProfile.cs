@@ -9,8 +9,7 @@ namespace ScientificPublications.Application.Features.Publications.Automapper.Pr
     {
         public PublicationRequestToEntityProfile()
         {
-            CreateMap<CreatePublicationCommand, PublicationEntity>()
-                .ForMember(entity => entity.AuthorsPublications, opts => opts.MapFrom<AuthorsValueResolver>());
+            CreateMap<CreatePublicationCommand, PublicationEntity>();
         }
     }
 }

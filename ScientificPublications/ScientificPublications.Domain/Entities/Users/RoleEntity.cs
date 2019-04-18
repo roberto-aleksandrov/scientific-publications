@@ -5,6 +5,11 @@ namespace ScientificPublications.Domain.Entities.Users
 {
     public class RoleEntity : BaseEntity
     {
+        public RoleEntity()
+        {
+            UserRoles = new List<UserRoleEntity>();
+        }
+
         public int Id { get; set; }
 
         public Role Role { get; set; }

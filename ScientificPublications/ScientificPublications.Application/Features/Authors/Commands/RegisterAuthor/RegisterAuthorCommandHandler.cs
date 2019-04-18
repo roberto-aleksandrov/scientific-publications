@@ -21,23 +21,17 @@ namespace ScientificPublications.Application.Features.Authors.Commands.RegisterA
         {
             _mediator = mediator;
         }
-
-        private async Task AssignRoleToAuthor(AuthorEntity author)
-        {
-            var role = await _data.Roles.ListAsync(new GetRolesSpecification(Role.Author));
-
-            author.User.UserRoles.Add(new UserRoleEntity { Role = role.Single() });
-        }
-
+        
         public override async Task<AuthorEntity> Handle(RegisterAuthorCommand request, CancellationToken cancellationToken)
         {
             var userEntity = await _mediator.Send(request.RegisterUser);
             var author = await _mediator.Send(request.CreateAuthor);
+            var assignUserRoleCommand = new AssignUserRoleCommand { Role = Role.Author, UserId = userEntity.Id, UserInfo = request.UserInfo };
 
             author.User = userEntity;
 
-            await AssignRoleToAuthor(author);
-
+            await _mediator.Send(assignUserRoleCommand);
+            
             await _data.Authors.AddAsync(author);
 
             return author;

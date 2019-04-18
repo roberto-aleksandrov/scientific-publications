@@ -1,7 +1,12 @@
 ﻿using AutoMapper;
 using MediatR;
 using ScientificPublications.Application.Common.Interfaces.Data;
+using ScientificPublications.Application.Features.Affiliations.Specifications;
+using ScientificPublications.Application.Features.Authors.Specifications;
+using ScientificPublications.Domain.Entities.AuthorsPublications;
+using ScientificPublications.Domain.Entities.PublicationAffiliations;
 using ScientificPublications.Domain.Entities.Publications;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -22,7 +27,25 @@ namespace ScientificPublications.Application.Features.Publications.Commands.Crea
         {
             var publicationEntity = _mapper.Map<PublicationEntity>(request);
 
-            return await _data.Publications.AddAsync(publicationEntity);
+            var authors = await _data.Authors.ListAsync(new GetAuthorsSpecification(request.AuthorIds) { IncludeUncommited = true });
+            
+            var authorsPublications = authors.Select(n => new AuthorPublicationEntity { Author = n });
+
+            publicationEntity.AuthorsPublications = authorsPublications.ToList();
+
+
+            if (request.AffiliationIds?.Any() != null)
+            {
+                var affiliations = await _data.Affiliations.ListAsync(new GetAffiliationSpecification(request.AffiliationIds) { IncludeUncommited = true });
+
+                var publicationAffiliations = affiliations.Select(n => new PublicationAffiliationEntity { Affiliation = n });
+
+                publicationEntity.PublicationAffiliations = publicationAffiliations.ToList();
+            }
+                        
+            await _data.Publications.AddAsync(publicationEntity);
+
+            return publicationEntity;
         }
     }
 }

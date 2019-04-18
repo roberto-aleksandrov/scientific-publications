@@ -21,11 +21,11 @@ namespace ScientificPublications.Integration.Tests
               Aliases = new List<string>() { "test", "Test" }
           }
         };
-        public static CreatePublicationRequest CreatePublicationRequest => new CreatePublicationRequest
-        {
-            Title = "test title",
-            Text = "test text",
-            AuthorIds = new List<int>() { 1 }
-        };
+        //public static CreatePublicationRequest CreatePublicationRequest => new CreatePublicationRequest
+        //{
+        //    Title = "test title",
+        //    Text = "test text",
+        //    AuthorIds = new List<int>() { 1 }
+        //};
     }
 }

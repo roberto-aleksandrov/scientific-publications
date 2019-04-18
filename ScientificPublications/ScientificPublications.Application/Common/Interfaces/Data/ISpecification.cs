@@ -21,5 +21,7 @@ namespace ScientificPublications.Application.Common.Interfaces.Data
         int Skip { get; }
 
         bool isPagingEnabled { get; }
+
+        bool IncludeUncommited { get; }
     }
 }

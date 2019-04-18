@@ -6,6 +6,6 @@ namespace ScientificPublications.Infrastructure.Scopus.Constants
     {
         public static Func<string, string> GetDocumentsUrl = (scopusId) => $"content/search/scopus?query=AU-ID({scopusId})&field=dc:identifier";
 
-        public static Func<string, string> GetAbstracts = (scopusId) => $"content/abstract/scopus_id/${scopusId}?field=head";
+        public static Func<string, string> GetAbstracts = (scopusId) => $"content/abstract/scopus_id/${scopusId}";
     }
 }

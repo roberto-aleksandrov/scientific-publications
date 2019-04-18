@@ -38,7 +38,7 @@ namespace ScientificPublications.Infrastructure.Scopus
             {
                 var response = await _client.GetAsync(ScopusUrls.GetAbstracts(document.DocumentScopusId));
                 var content = await response.Content.ReadAsStringAsync();
-                var authorPublication = JObject.Parse(content).ToObject<ScopusAuthorPublicationDto>(serializer);
+                var authorPublication = JObject.Parse(content).ToObject<ScopusPublicationDto>(serializer);
 
                 authorPublication.ScopusId = document.DocumentScopusId;
 

@@ -1,18 +1,19 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using ScientificPublications.Domain.Entities;
+using ScientificPublications.Domain.Entities.Affiliations;
+using ScientificPublications.Domain.Entities.PublicationAffiliations;
+using ScientificPublications.Domain.Entities.Publications;
+using ScientificPublications.Domain.Entities.Users;
+using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using ScientificPublications.Domain.Entities;
-using ScientificPublications.Domain.Entities.AuthorsPublications;
-using ScientificPublications.Domain.Entities.Publications;
-using ScientificPublications.Domain.Entities.Users;
 
 namespace ScientificPublications.Infrastructure
 {
     public class ScientificPublicationsContext : DbContext
     {
-        public ScientificPublicationsContext(DbContextOptions<ScientificPublicationsContext> options) 
+        public ScientificPublicationsContext(DbContextOptions<ScientificPublicationsContext> options)
             : base(options) { }
 
 
@@ -29,6 +30,10 @@ namespace ScientificPublications.Infrastructure
         public DbSet<UserRoleEntity> UsersRoles { get; set; }
 
         public DbSet<RoleEntity> Roles { get; set; }
+
+        public DbSet<AffiliationEntity> Affiliations { get; set; }
+
+        public DbSet<PublicationAffiliationEntity> PublicationAffiliations { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

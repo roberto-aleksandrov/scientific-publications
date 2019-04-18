@@ -1,6 +1,8 @@
 ﻿using FluentValidation;
 using ScientificPublications.Application.Common.Extensions;
 using ScientificPublications.Application.Common.Interfaces.Data;
+using ScientificPublications.Application.Features.Authors.Specifications;
+using System.Linq;
 
 namespace ScientificPublications.Application.Features.Authors.Commands.CreateAuthor
 {
@@ -9,7 +11,10 @@ namespace ScientificPublications.Application.Features.Authors.Commands.CreateAut
         public CreateAuthorCommandValidator(IData data)
         {
             RuleFor(n => n.ScopusId)
-                .HasNoneDb(data.Authors, scopusId => entity => entity.ScopusId == scopusId);
+                .IsTrueDb(data.Authors,
+                    (scopusId, authors) => !authors.Any(),
+                    scopusId => new GetScopusAuthorsSpecification(scopusId))
+                .When(n => !string.IsNullOrEmpty(n.ScopusId));
         }
     }
 }

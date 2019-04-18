@@ -18,7 +18,7 @@ namespace ScientificPublications.Persistance.Configurations
 
             builder.HasOne(ur => ur.User)
                 .WithMany(u => u.UserRoles)
-                .HasForeignKey(u => u.RoleId);
+                .HasForeignKey(u => u.UserId);
         }
     }
 }

@@ -31,6 +31,11 @@ namespace ScientificPublications.Infrastructure.Data
             return await ApplySpecification(spec).ToListAsync();
         }
 
+        public async Task<T> SingleAsync(ISpecification<T> spec)
+        {
+            return await ApplySpecification(spec).SingleAsync();
+        }
+
         public async Task<int> CountAsync(ISpecification<T> spec)
         {
             return await ApplySpecification(spec).CountAsync();
@@ -59,7 +64,13 @@ namespace ScientificPublications.Infrastructure.Data
 
         private IQueryable<T> ApplySpecification(ISpecification<T> spec)
         {
-            return SpecificationEvaluator<T>.GetQuery(_dbContext.Set<T>().AsQueryable(), spec);
+            var set = _dbContext.Set<T>().AsQueryable();
+            var localSet = _dbContext.Set<T>().Local.AsQueryable();
+            var queriable = spec.IncludeUncommited
+                ? set.Concat(localSet.Where(n => _dbContext.Entry(n).State == EntityState.Added))
+                : set;
+
+            return SpecificationEvaluator<T>.GetQuery(queriable, spec);
         }
     }
 }

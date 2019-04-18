@@ -18,6 +18,8 @@ using ScientificPublications.Application.Common.Interfaces.Hasher;
 using ScientificPublications.Application.Common.Interfaces.Scopus;
 using ScientificPublications.Application.Common.Middlewares;
 using ScientificPublications.Application.Features.Users.Commands.RegisterUser;
+using ScientificPublications.Domain.Entities.Affiliations;
+using ScientificPublications.Domain.Entities.PublicationAffiliations;
 using ScientificPublications.Domain.Entities.Publications;
 using ScientificPublications.Domain.Entities.Users;
 using ScientificPublications.Infrastructure;
@@ -84,7 +86,7 @@ namespace ScientificPublications.WebUI
             RegisterMediatr(services);
 
             services.AddOptions();
-
+            
             services.AddTransient<IAsyncRepository<PublicationEntity>, EfRepository<PublicationEntity>>();
             services.AddTransient<IAsyncRepository<UserEntity>, EfRepository<UserEntity>>();
             services.AddTransient<IAsyncRepository<AuthorEntity>, EfRepository<AuthorEntity>>();
@@ -93,6 +95,8 @@ namespace ScientificPublications.WebUI
             services.AddTransient<IAsyncRepository<UserRoleEntity>, EfRepository<UserRoleEntity>>();
             services.AddTransient<IAsyncRepository<RoleEntity>, EfRepository<RoleEntity>>();
             services.AddTransient<IAsyncRepository<UserRoleEntity>, EfRepository<UserRoleEntity>>();
+            services.AddTransient<IAsyncRepository<AffiliationEntity>, EfRepository<AffiliationEntity>>();
+            services.AddTransient<IAsyncRepository<PublicationAffiliationEntity>, EfRepository<PublicationAffiliationEntity>>();
 
             services.AddTransient<IData, ScientificPublicationsData>();
             services.AddTransient<IHasher, PasswordGenerator>();

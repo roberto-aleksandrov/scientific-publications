@@ -14,8 +14,8 @@ namespace ScientificPublications.Domain.Entities.Users
         public int Id { get; set; }
 
         public string ScopusId { get; set; }
-        
-        public int UserId { get; set; }
+
+        public int? UserId { get; set; }
 
         public UserEntity User { get; set; }
 
