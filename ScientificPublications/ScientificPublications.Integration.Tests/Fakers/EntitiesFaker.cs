@@ -1,4 +1,5 @@
 ﻿using Bogus;
+using ScientificPublications.Domain.Entities.Affiliations;
 using ScientificPublications.Domain.Entities.AuthorsPublications;
 using ScientificPublications.Domain.Entities.Publications;
 using ScientificPublications.Domain.Entities.Users;
@@ -27,6 +28,10 @@ namespace ScientificPublications.Integration.Tests.Fakers
                 new Faker<AuthorPublicationEntity>()
                     .RuleFor(ap => ap.Author, f => AuthorFaker.Generate())
                     .RuleFor(ap => ap.Publication, f => PublicationFaker.Generate());
+
+        public static Faker<AffiliationEntity> AffiliationFaker { get; } =
+                new Faker<AffiliationEntity>()
+                    .RuleFor(a => a.Name, f => f.Lorem.Word());
 
     }
 }

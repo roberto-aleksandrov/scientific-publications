@@ -19,8 +19,9 @@ namespace ScientificPublications.Application.Common.Validators
         public IsTrueAsyncValidator(
              Func<TProperty, IReadOnlyCollection<TEntity>, bool> criteria,
             IAsyncRepository<TEntity> repository,
-            Func<TProperty, ISpecification<TEntity>> spec)
-            : base(ErrorMessages.EntityExists)
+            Func<TProperty, ISpecification<TEntity>> spec,
+            string errorMessage)
+            : base(errorMessage)
         {
             _repository = repository;
             _spec = spec;

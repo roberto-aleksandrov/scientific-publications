@@ -1,49 +1,51 @@
 ﻿using AutoMapper;
+using Extensions;
 using MediatR;
 using ScientificPublications.Application.Common.Interfaces.Data;
-using ScientificPublications.Application.Features.Affiliations.Specifications;
-using ScientificPublications.Application.Features.Authors.Specifications;
-using ScientificPublications.Domain.Entities.AuthorsPublications;
-using ScientificPublications.Domain.Entities.PublicationAffiliations;
+using ScientificPublications.Application.Common.Models.Mediatr;
+using ScientificPublications.Application.Features.AuthorPublications.Commands.CreateAuthorPublication;
+using ScientificPublications.Application.Features.PublicationAffiliations.Commands.CreatePublicationAffiliation;
 using ScientificPublications.Domain.Entities.Publications;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace ScientificPublications.Application.Features.Publications.Commands.CreatePublication
 {
-    public class CreatePublicationCommandHandler : IRequestHandler<CreatePublicationCommand, PublicationEntity>
+    public class CreatePublicationCommandHandler : BaseRequestHandler<CreatePublicationCommand, PublicationEntity>
     {
-        private readonly IData _data;
-        private readonly IMapper _mapper;
+        private readonly IMediator _mediator;
 
-        public CreatePublicationCommandHandler(IData data, IMapper mapper)
+        public CreatePublicationCommandHandler(IData data, IMapper mapper, IMediator mediator)
+            : base(data, mapper)
         {
-            _data = data;
-            _mapper = mapper;
+            _mediator = mediator;
         }
 
-        public async Task<PublicationEntity> Handle(CreatePublicationCommand request, CancellationToken cancellationToken)
+        public override async Task<PublicationEntity> Handle(CreatePublicationCommand request, CancellationToken cancellationToken)
         {
             var publicationEntity = _mapper.Map<PublicationEntity>(request);
 
-            var authors = await _data.Authors.ListAsync(new GetAuthorsSpecification(request.AuthorIds) { IncludeUncommited = true });
-            
-            var authorsPublications = authors.Select(n => new AuthorPublicationEntity { Author = n });
-
-            publicationEntity.AuthorsPublications = authorsPublications.ToList();
-
-
-            if (request.AffiliationIds?.Any() != null)
-            {
-                var affiliations = await _data.Affiliations.ListAsync(new GetAffiliationSpecification(request.AffiliationIds) { IncludeUncommited = true });
-
-                var publicationAffiliations = affiliations.Select(n => new PublicationAffiliationEntity { Affiliation = n });
-
-                publicationEntity.PublicationAffiliations = publicationAffiliations.ToList();
-            }
-                        
             await _data.Publications.AddAsync(publicationEntity);
+
+            await request.AuthorIds?.ForEachAsync(async n =>
+            {
+                await _mediator.Send(new CreateAuthorPublicationCommand
+                {
+                    PublicationId = publicationEntity.Id,
+                    AuthorId = n,
+                    UserInfo = request.UserInfo
+                });
+            });
+
+            await request.AffiliationIds?.ForEachAsync(async n =>
+            {
+                await _mediator.Send(new CreatePublicationAffiliationCommand
+                {
+                    PublicationId = publicationEntity.Id,
+                    AffiliationId = n,
+                    UserInfo = request.UserInfo
+                });
+            });
 
             return publicationEntity;
         }

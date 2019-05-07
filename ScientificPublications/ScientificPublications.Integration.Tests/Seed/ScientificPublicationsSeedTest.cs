@@ -1,4 +1,6 @@
-﻿using ScientificPublications.Infrastructure;
+﻿using ScientificPublications.Domain.Entities.Users;
+using ScientificPublications.Domain.Enums;
+using ScientificPublications.Infrastructure;
 using System.Linq;
 
 namespace ScientificPublications.Integration.Tests.Seed
@@ -12,14 +14,10 @@ namespace ScientificPublications.Integration.Tests.Seed
 
         private static void SeedRoles(ScientificPublicationsContext context)
         {
-            SeedData.Roles.ToList().ForEach(role =>
-            {
-                context.Roles.Add(role);
-            });
-
+            context.Roles.Add(new RoleEntity { Role = Role.Author });
+            
             context.SaveChanges();
         }
-
 
     }
 }

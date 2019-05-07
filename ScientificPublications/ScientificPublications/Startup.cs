@@ -19,6 +19,7 @@ using ScientificPublications.Application.Common.Interfaces.Scopus;
 using ScientificPublications.Application.Common.Middlewares;
 using ScientificPublications.Application.Features.Users.Commands.RegisterUser;
 using ScientificPublications.Domain.Entities.Affiliations;
+using ScientificPublications.Domain.Entities.AuthorsPublications;
 using ScientificPublications.Domain.Entities.PublicationAffiliations;
 using ScientificPublications.Domain.Entities.Publications;
 using ScientificPublications.Domain.Entities.Users;
@@ -97,6 +98,7 @@ namespace ScientificPublications.WebUI
             services.AddTransient<IAsyncRepository<UserRoleEntity>, EfRepository<UserRoleEntity>>();
             services.AddTransient<IAsyncRepository<AffiliationEntity>, EfRepository<AffiliationEntity>>();
             services.AddTransient<IAsyncRepository<PublicationAffiliationEntity>, EfRepository<PublicationAffiliationEntity>>();
+            services.AddTransient<IAsyncRepository<AuthorPublicationEntity>, EfRepository<AuthorPublicationEntity>>();
 
             services.AddTransient<IData, ScientificPublicationsData>();
             services.AddTransient<IHasher, PasswordGenerator>();

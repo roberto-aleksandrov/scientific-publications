@@ -1,4 +1,5 @@
 using FluentValidation;
+using ScientificPublications.Application.Common.Constants.Validators;
 using ScientificPublications.Application.Common.Interfaces.Data;
 using ScientificPublications.Application.Common.Models.Mediatr;
 using ScientificPublications.Application.Common.Validators;
@@ -33,10 +34,11 @@ namespace ScientificPublications.Application.Common.Extensions
             this IRuleBuilder<TRequest, TProperty> ruleBuilder,
             IAsyncRepository<TEntity> repository,
             Func<TProperty, IReadOnlyCollection<TEntity>, bool> criteria,
-            Func<TProperty, ISpecification<TEntity>> spec = null)
+            Func<TProperty, ISpecification<TEntity>> spec = null,
+            string errorMessage = ErrorMessages.Invalid)
                 where TEntity : BaseEntity
         {
-            return ruleBuilder.SetValidator(new IsTrueAsyncValidator<TProperty, TEntity>(criteria, repository, spec));
+            return ruleBuilder.SetValidator(new IsTrueAsyncValidator<TProperty, TEntity>(criteria, repository, spec, errorMessage));
         }
 
         public static IRuleBuilderOptions<TRequest, IEnumerable<TProperty>> HasUnique<TRequest, TProperty>(

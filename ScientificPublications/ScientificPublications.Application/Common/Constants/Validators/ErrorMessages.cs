@@ -13,5 +13,7 @@ namespace ScientificPublications.Application.Common.Constants.Validators
         public const string NotUnique = "{PropertyName} must be unique!";
 
         public const string InvalidInclude = "Invalid include clause.";
+
+        public const string Invalid = "Invalid";
     }
 }

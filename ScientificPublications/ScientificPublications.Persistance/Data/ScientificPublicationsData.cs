@@ -1,6 +1,7 @@
 ﻿using ScientificPublications.Application.Common.Interfaces.Data;
 using ScientificPublications.Domain.Entities;
 using ScientificPublications.Domain.Entities.Affiliations;
+using ScientificPublications.Domain.Entities.AuthorsPublications;
 using ScientificPublications.Domain.Entities.PublicationAffiliations;
 using ScientificPublications.Domain.Entities.Publications;
 using ScientificPublications.Domain.Entities.Users;
@@ -27,6 +28,7 @@ namespace ScientificPublications.Infrastructure.Data
             IAsyncRepository<RoleEntity> roles,
             IAsyncRepository<AffiliationEntity> affiliations,
             IAsyncRepository<PublicationAffiliationEntity> publicationAffiliations,
+            IAsyncRepository<AuthorPublicationEntity> authorPublications,
             IAsyncRepository<UserRoleEntity> userRoles)
         {
             _context = context;
@@ -39,6 +41,7 @@ namespace ScientificPublications.Infrastructure.Data
             UserRoles = userRoles;
             Affiliations = affiliations;
             PublicationAffiliations = publicationAffiliations;
+            AuthorPublications = authorPublications;
         }
 
         public IAsyncRepository<UserEntity> Users { get; }
@@ -58,6 +61,8 @@ namespace ScientificPublications.Infrastructure.Data
         public IAsyncRepository<AffiliationEntity> Affiliations { get; }
 
         public IAsyncRepository<PublicationAffiliationEntity> PublicationAffiliations { get; }
+
+        public IAsyncRepository<AuthorPublicationEntity> AuthorPublications { get; }
 
         public IAsyncRepository<TEntity> Repository<TEntity>()
             where TEntity : BaseEntity

@@ -1,8 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ScientificPublications.Application.Common.Constants.Validators;
+using ScientificPublications.Domain.Entities.Affiliations;
 using ScientificPublications.Domain.Entities.AuthorsPublications;
 using ScientificPublications.Domain.Entities.Publications;
 using ScientificPublications.Domain.Entities.Users;
+using ScientificPublications.Integration.Tests.ControllersTests.AuthorsPublicationsControllerTests.Contracts;
 using ScientificPublications.Integration.Tests.ControllersTests.PublicationsControllerTests.Contracts;
 using ScientificPublications.Integration.Tests.Fakers;
 using System.Collections.Generic;
@@ -19,14 +21,18 @@ namespace ScientificPublications.Integration.Tests.ControllersTests.Publications
         public async Task CreatePublication_Test()
         {
             var authors = _factory.Seeder.SeedMany<AuthorEntity>(10);
+            var affiliations = _factory.Seeder.SeedMany<AffiliationEntity>(10);
             var request = RequestsFaker.CreatePublicationFaker.Generate();
+
             request.AuthorIds = authors.Select(n => n.Id).ToList();
+            request.AffiliationIds = affiliations.Select(n => n.Id).ToList();
 
             await Authenticate();
             var response = await PostAsync<CreatePublicationRequest, List<int>>(request);
 
             var publication = _factory.Context.Publications
                 .Include(n => n.AuthorsPublications)
+                .Include(n => n.PublicationAffiliations)
                 .First(n => n.Id == response.Content.First());
 
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -34,13 +40,17 @@ namespace ScientificPublications.Integration.Tests.ControllersTests.Publications
             Assert.Equal(request.Doi, publication.Doi);
             Assert.Equal(request.Title, publication.Title);
             Assert.Equal(string.Join("", request.AuthorIds), string.Join("", publication.AuthorsPublications.Select(n => n.AuthorId)));
+            Assert.Equal(request.AuthorIds.Count(), publication.AuthorsPublications.Count());
+            Assert.Equal(request.AffiliationIds.Count(), publication.PublicationAffiliations.Count());
         }
 
         [Fact]
         public async Task CreatePublication_NonUniqueAuthorIds_Test()
         {
             var request = RequestsFaker.CreatePublicationFaker.Generate();
-            request.AuthorIds = new List<int>() { 1, 1, 1 };
+            var author = _factory.Seeder.Seed<AuthorEntity>();
+
+            request.AuthorIds = new List<int>() { author.Id, author.Id, author.Id };
 
             await Authenticate();
             var response = await PostAsync<CreatePublicationRequest, List<int>>(request);
@@ -53,15 +63,18 @@ namespace ScientificPublications.Integration.Tests.ControllersTests.Publications
         [Fact]
         public async Task CreatePublication_AuthorDoesNotExist_Test()
         {
-            var request = RequestsFaker.CreatePublicationFaker.Generate(); ;
-            request.AuthorIds = new List<int>() { 1, 2, 100 };
+            var request = RequestsFaker.CreatePublicationFaker.Generate();
+            var affiliation = _factory.Seeder.Seed<AffiliationEntity>();
+
+            request.AuthorIds = new List<int> { 1, 2, 100 };
+            request.AffiliationIds = new List<int> { affiliation.Id };
 
             await Authenticate();
             var response = await PostAsync<CreatePublicationRequest, List<int>>(request);
             var errorMessage = response.ErrorMessages.FirstOrDefault();
 
-            Assert.Equal(nameof(request.AuthorIds), errorMessage.Key);
-            Assert.Equal(ErrorMessages.EntityExists, errorMessage.Value[0]);
+            Assert.Equal(nameof(CreateAuthorPublicationRequest.AuthorId), errorMessage.Key);
+            Assert.Equal(ErrorMessages.EntityDoesNotExists, errorMessage.Value[0]);
         }
 
         [Fact]
