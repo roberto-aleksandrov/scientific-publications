@@ -1,12 +1,9 @@
-﻿using ScientificPublications.Application.Features.Publications.Models;
-using ScientificPublications.Integration.Tests.Attributes;
-using ScientificPublications.Integration.Tests.Contracts;
+﻿using ScientificPublications.Integration.Tests.Contracts;
 using System;
 using System.Collections.Generic;
 
 namespace ScientificPublications.Integration.Tests.ControllersTests.PublicationsControllerTests.Contracts
 {
-    [Endpoint("Create")]
     public class GetPublicationResponse : ResponseContent
     {
         public string ScopusId { get; set; }

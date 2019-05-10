@@ -1,12 +1,13 @@
 ﻿using ScientificPublications.Integration.Tests.Attributes;
 using ScientificPublications.Integration.Tests.Contracts;
+using ScientificPublications.WebUI.Controllers;
 using System;
 using System.Collections.Generic;
 
 namespace ScientificPublications.Integration.Tests.ControllersTests.PublicationsControllerTests.Contracts
 {
 
-    [Endpoint("Create")]
+    [Endpoint(nameof(PublicationsController.Create))]
     public class CreatePublicationRequest : Request
     {
         public string ScopusId { get; set; }

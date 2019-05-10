@@ -2,10 +2,11 @@
 using ScientificPublications.Integration.Tests.Contracts;
 using ScientificPublications.Integration.Tests.ControllersTests.AuthorsControllerTests.Contracts;
 using ScientificPublications.Integration.Tests.ControllersTests.UsersControllerTests.Contracts;
+using ScientificPublications.WebUI.Controllers;
 
 namespace ScientificPublications.Integration.Tests.ControllersTests.Authors.Contracts
 {
-    [Endpoint("Create")]
+    [Endpoint(nameof(AuthorsController.Create))]
     public class RegisterAuthorRequest : Request
     {
         public RegisterUserRequest RegisterUser { get; set; }
