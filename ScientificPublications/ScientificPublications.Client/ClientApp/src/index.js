@@ -1,17 +1,23 @@
-import 'bootstrap/dist/css/bootstrap.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import { ConnectedRouter } from 'connected-react-router'
+
 import App from './app';
 import registerServiceWorker from './registerServiceWorker';
+import configureStore, { history } from './store/configure.store';
 
-const baseUrl = document.getElementsByTagName('base')[0].getAttribute('href');
-const rootElement = document.getElementById('root');
+import 'bootstrap/dist/css/bootstrap.css';
+
+const apis = {};
 
 ReactDOM.render(
-  <BrowserRouter basename={baseUrl}>
-    <App />
-  </BrowserRouter>,
-  rootElement);
+  <Provider store={configureStore(apis)}> 
+    <ConnectedRouter history={history}>
+      <App />
+    </ConnectedRouter>
+   </Provider>,
+  document.getElementById('root')
+);
 
 registerServiceWorker();
