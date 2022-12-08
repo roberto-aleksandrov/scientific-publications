@@ -6,7 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="Caelan.Frameworks.PasswordEncryption" Version="3.3.2.15" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="5.3.0" />
   </ItemGroup>
 
